@@ -7,5 +7,6 @@ export default async function Home() {
   const { data: products } = await supabase.from('products').select('*');
   const { data: categories } = await supabase.from('categories').select('*').order('count', { ascending: false });
 
-  return <Screen_Home products={products || ([] as any[])} categories={categories || ([] as any[])} />;
+  // @ts-ignore
+  return <Screen_Home products={products || []} categories={categories || []} />;
 }
