@@ -5,6 +5,7 @@ import { Search, Sparkles, User, Bot, Loader2 } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 
 export default function AiSearchBox() {
+  // @ts-ignore
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
 
   return (
