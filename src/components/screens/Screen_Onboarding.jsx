@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 9: Onboarding / Cadastro de SaaS — anunciante cria o perfil
 const Screen_Onboarding = () => {
   return (
@@ -258,4 +262,6 @@ const Screen_Onboarding = () => {
   );
 };
 
-window.Screen_Onboarding = Screen_Onboarding;
+
+
+export default Screen_Onboarding;

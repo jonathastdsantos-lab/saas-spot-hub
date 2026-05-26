@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 11: Comunidade / Discussões
 const Screen_Community = () => {
   const threads = [
@@ -172,4 +176,6 @@ const Screen_Community = () => {
   );
 };
 
-window.Screen_Community = Screen_Community;
+
+
+export default Screen_Community;

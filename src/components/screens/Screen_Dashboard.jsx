@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 7: Dashboard do anunciante (dono de SaaS)
 const Screen_Dashboard = () => {
   const p = SAAS[0]; // Fluxia owner
@@ -262,4 +266,4 @@ const Screen_Dashboard = () => {
   );
 };
 
-window.Screen_Dashboard = Screen_Dashboard;
+export default Screen_Dashboard;

@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 6: Marketplace de Agentes IA
 const Screen_Agents = () => {
   const agents = [
@@ -174,4 +178,6 @@ const Screen_Agents = () => {
   );
 };
 
-window.Screen_Agents = Screen_Agents;
+
+
+export default Screen_Agents;

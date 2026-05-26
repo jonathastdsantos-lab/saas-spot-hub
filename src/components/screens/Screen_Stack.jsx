@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 5: Gerador de Stack — quiz à esquerda + resultado à direita
 const Screen_Stack = () => {
   const stack = [
@@ -248,4 +252,6 @@ const Screen_Stack = () => {
   );
 };
 
-window.Screen_Stack = Screen_Stack;
+
+
+export default Screen_Stack;

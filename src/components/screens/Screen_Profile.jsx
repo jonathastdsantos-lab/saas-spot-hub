@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 3: Perfil individual do SaaS (Fluxia)
 const Screen_Profile = () => {
   const p = SAAS[0]; // Fluxia
@@ -235,4 +239,6 @@ const Screen_Profile = () => {
   );
 };
 
-window.Screen_Profile = Screen_Profile;
+
+
+export default Screen_Profile;

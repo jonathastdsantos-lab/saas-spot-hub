@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Telas mobile: Home + Consultor IA renderizadas em frames iOS
 const Screen_Mobile_Home = () => {
   return (
@@ -222,5 +226,14 @@ const Screen_Mobile_Chat = () => {
   );
 };
 
-window.Screen_Mobile_Home = Screen_Mobile_Home;
-window.Screen_Mobile_Chat = Screen_Mobile_Chat;
+
+
+
+const Screen_Mobile = () => (
+  <div style={{ display: 'flex', gap: 20 }}>
+    <Screen_Mobile_Home />
+    <Screen_Mobile_Chat />
+  </div>
+);
+
+export default Screen_Mobile;

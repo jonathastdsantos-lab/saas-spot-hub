@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 4: Comparador lado a lado
 const Screen_Compare = () => {
   const items = [SAAS[0], SAAS[1], SAAS[6]]; // Fluxia, ZapCRM, Agentik
@@ -195,4 +199,6 @@ const Screen_Compare = () => {
   );
 };
 
-window.Screen_Compare = Screen_Compare;
+
+
+export default Screen_Compare;

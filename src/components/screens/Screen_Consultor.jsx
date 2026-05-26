@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 2: Consultor IA — chat conversacional com recomendações
 const Screen_Consultor = () => {
   return (
@@ -210,4 +214,6 @@ const Screen_Consultor = () => {
   );
 };
 
-window.Screen_Consultor = Screen_Consultor;
+
+
+export default Screen_Consultor;

@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 8: Página de categoria / Ranking
 const Screen_Category = () => {
   const items = SAAS.filter(s => ['CRM', 'WhatsApp', 'IA'].includes(s.cat) || s.tags.includes('CRM') || s.tags.includes('WhatsApp')).slice(0, 10);
@@ -187,4 +191,6 @@ const Screen_Category = () => {
   );
 };
 
-window.Screen_Category = Screen_Category;
+
+
+export default Screen_Category;

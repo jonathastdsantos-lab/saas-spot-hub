@@ -1,3 +1,7 @@
+import React from 'react';
+import { SAAS, CATEGORIES } from '../../lib/mockData';
+import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from '../SharedUI';
+
 // Tela 10: Mapa de Integrações — node graph visual de como tudo se conecta
 const Screen_Integrations = () => {
   // Node positions on an 1100x540 canvas. Center = hub.
@@ -210,4 +214,6 @@ const Screen_Integrations = () => {
   );
 };
 
-window.Screen_Integrations = Screen_Integrations;
+
+
+export default Screen_Integrations;

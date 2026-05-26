@@ -1,7 +1,7 @@
 // Tela 1: Home / Landing — busca IA centralizada, categorias, em destaque, rankings
-const Screen_Home = () => {
-  const featured = SAAS.slice(0, 4);
-  const trending = SAAS.slice(4, 10);
+const Screen_Home = ({ products = [], categories = [] }) => {
+  const featured = products.slice(0, 4);
+  const trending = products.slice(4, 10);
   return (
     <div className="sx-screen">
       <TopNav active="descobrir" />
@@ -70,7 +70,7 @@ const Screen_Home = () => {
         </div>
       </div>
 
-      {/* CATEGORIES grid */}
+      {/* categories grid */}
       <div style={{ padding: '20px 80px 32px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 18 }}>
           <h3 style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0, fontFamily: 'var(--font-mono)' }}>
@@ -79,7 +79,7 @@ const Screen_Home = () => {
           <a style={{ fontSize: 12, color: 'var(--text-dim)', textDecoration: 'none' }}>Ver todas →</a>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
-          {CATEGORIES.slice(0, 12).map(c => (
+          {categories.slice(0, 12).map(c => (
             <button key={c.id} className="sx-card" style={{
               padding: '14px', display: 'flex', flexDirection: 'column', gap: 8, textAlign: 'left',
               cursor: 'pointer', background: 'var(--surface)',
@@ -198,4 +198,4 @@ const Screen_Home = () => {
   );
 };
 
-window.Screen_Home = Screen_Home;
+export default Screen_Home;
