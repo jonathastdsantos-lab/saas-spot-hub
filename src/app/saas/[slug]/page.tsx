@@ -5,6 +5,12 @@ import { Stars } from '@/components/ui/Stars';
 import { ScoreGauge } from '@/components/ui/ScoreGauge';
 import { SAAS } from '@/lib/data/mock';
 
+export async function generateStaticParams() {
+  return SAAS.map((p) => ({
+    slug: p.slug,
+  }));
+}
+
 export default function ProfilePage({ params }: { params: { slug: string } }) {
   const p = SAAS.find(s => s.slug === params.slug) || SAAS[0];
   

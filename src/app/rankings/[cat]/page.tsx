@@ -5,6 +5,13 @@ import { Stars } from '@/components/ui/Stars';
 import { ScoreGauge } from '@/components/ui/ScoreGauge';
 import { SAAS } from '@/lib/data/mock';
 
+export async function generateStaticParams() {
+  const cats = Array.from(new Set(SAAS.map((p) => p.cat.toLowerCase().replace(/ /g, '-'))));
+  return cats.map((cat) => ({
+    cat,
+  }));
+}
+
 export default function CategoryPage({ params }: { params: { cat: string } }) {
   const items = SAAS.filter(s => ['CRM', 'WhatsApp', 'IA'].includes(s.cat) || s.tags.includes('CRM') || s.tags.includes('WhatsApp')).slice(0, 10);
   // Make sure we have 10
