@@ -53,9 +53,9 @@ export default function AiSearchBox() {
               </div>
               <div className="flex-1 prose prose-invert max-w-none text-[15px] leading-relaxed text-[var(--text)]">
                 {m.role === 'user' ? (
-                  <p>{m.content}</p>
+                  <p>{(m as any).content}</p>
                 ) : (
-                  <ReactMarkdown>{m.content}</ReactMarkdown>
+                  <ReactMarkdown>{(m as any).content}</ReactMarkdown>
                 )}
               </div>
             </div>
