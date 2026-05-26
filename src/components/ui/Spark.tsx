@@ -1,4 +1,4 @@
-export function Spark({ data, w = 80, h = 22 }: { data: number[], w?: number, h?: number }) {
+export function Spark({ data, w = 80, h = 22, color = 'var(--pos)' }: { data: number[], w?: number, h?: number, color?: string }) {
   if (!data || data.length === 0) return null;
   
   const max = Math.max(...data);
@@ -16,7 +16,7 @@ export function Spark({ data, w = 80, h = 22 }: { data: number[], w?: number, h?
       <polyline 
         points={points} 
         fill="none" 
-        stroke="var(--pos)" 
+        stroke={color} 
         strokeWidth="1.5" 
         strokeLinecap="round" 
         strokeLinejoin="round" 

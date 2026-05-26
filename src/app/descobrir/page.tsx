@@ -156,7 +156,7 @@ export default function DescobrirPage() {
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
-                      <ScoreGauge value={p.score} size={36} />
+                      <ScoreGauge score={p.score} size={36} />
                       <div className="sx-mono" style={{ fontSize: 11, color: 'var(--text-dim)' }}>{p.price}</div>
                     </div>
                   </div>
