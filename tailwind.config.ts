@@ -9,9 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0A0A0C",
-        foreground: "#F5F5F7",
-        neon: "#C8FF3E"
+        background: "var(--bg)",
+        foreground: "var(--text)",
+        neon: "var(--acc)",
+        acc: {
+          DEFAULT: "var(--acc)",
+          ink: "var(--acc-ink)",
+          soft: "var(--acc-soft)",
+          glow: "var(--acc-glow)"
+        },
+        ai: {
+          DEFAULT: "var(--ai)",
+          soft: "var(--ai-soft)",
+          glow: "var(--ai-glow)"
+        },
+        surface: {
+          DEFAULT: "var(--surface)",
+          2: "var(--surface-2)",
+          3: "var(--surface-3)"
+        },
+        border: {
+          DEFAULT: "var(--border)",
+          strong: "var(--border-strong)"
+        },
+        pos: "var(--pos)",
+        neg: "var(--neg)",
+        dim: "var(--text-dim)",
+        muted: "var(--text-muted)"
       },
       fontFamily: {
         space: ["var(--font-space)"],

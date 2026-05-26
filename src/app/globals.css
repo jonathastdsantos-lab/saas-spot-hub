@@ -3,11 +3,216 @@
 @tailwind utilities;
 
 :root {
-  --background: #0A0A0C;
-  --foreground: #F5F5F7;
+  /* Cores base */
+  --bg: #0A0A0C;
+  --bg-2: #111115;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --surface-3: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  
+  --text: #F5F5F7;
+  --text-dim: #A1A1AA;
+  --text-muted: #71717A;
+
+  /* Cores de acento */
+  --acc: #C8FF3E;
+  --acc-ink: #0A0A0C;
+  --acc-soft: rgba(200, 255, 62, 0.15);
+  --acc-glow: rgba(200, 255, 62, 0.3);
+
+  /* IA */
+  --ai: #8B5CF6;
+  --ai-soft: rgba(139, 92, 246, 0.15);
+  --ai-glow: rgba(139, 92, 246, 0.3);
+
+  /* Semânticas */
+  --pos: #34D399;
+  --neg: #EF4444;
+
+  /* Shadows */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  --background: var(--bg);
+  --foreground: var(--text);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Utilitários sx-* baseados no design spec */
+.sx-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sx-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.sx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.sx-btn:hover {
+  background: var(--surface-2);
+}
+
+.sx-btn--primary {
+  background: var(--acc);
+  color: var(--acc-ink);
+  border-color: transparent;
+}
+
+.sx-btn--primary:hover {
+  background: #b0f020;
+}
+
+.sx-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.sx-btn--ghost:hover {
+  background: var(--surface);
+}
+
+.sx-btn--sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+.sx-btn--lg {
+  padding: 14px 24px;
+  font-size: 15px;
+  border-radius: 14px;
+}
+
+.sx-btn--icon {
+  padding: 8px;
+}
+
+.sx-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.sx-pill--acc {
+  background: var(--acc-soft);
+  color: var(--acc);
+  border-color: transparent;
+}
+
+.sx-pill--ai {
+  background: var(--ai-soft);
+  color: var(--ai);
+  border-color: transparent;
+}
+
+.sx-pill--pos {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--pos);
+  border-color: transparent;
+}
+
+.sx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sx-chip:hover {
+  background: var(--surface);
+}
+
+.sx-search {
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+}
+
+.sx-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+}
+
+.sx-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.sx-mono {
+  font-family: var(--font-mono);
+}
+
+.sx-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.sx-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.sx-img-ph {
+  background: var(--surface-2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
 }
