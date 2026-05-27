@@ -8,4 +8,7 @@ export default defineConfig({
     TanStackRouterVite(),
     react()
   ],
+  define: {
+    'process.env': {}
+  }
 })
