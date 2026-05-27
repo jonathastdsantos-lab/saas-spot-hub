@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Stackly — Procurando CTO co-founder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --acc: #C8FF3E;
+    --acc-ink: #0A0A0B;
+    --acc-soft: rgba(200,255,62,0.16);
+    --ai: #9D7CFE;
+    --ai-soft: rgba(157,124,254,0.18);
+    --pos: #6BE49F;
+    --neg: #FF7A6A;
+    --bg: #0A0A0C;
+    --surface: #15151A;
+    --surface-2: #1B1B21;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #F5F5F7;
+    --text-dim: #A6A8AE;
+    --text-muted: #6A6D75;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 16px; line-height: 1.6; letter-spacing: -0.005em; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .ital { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; }
+  .acc { color: var(--acc); }
+  .ai-c { color: var(--ai); }
+  .dim { color: var(--text-dim); }
+  .muted { color: var(--text-muted); }
+
+  .page { max-width: 880px; margin: 0 auto; padding: 80px 56px 120px; position: relative; }
+  .glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, var(--ai-soft) 0%, transparent 60%); filter: blur(40px); pointer-events: none; z-index: -1; }
+
+  /* Header */
+  header.brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 80px; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill.ai { color: var(--ai); background: var(--ai-soft); border-color: transparent; }
+  .pill.acc { color: var(--acc); background: var(--acc-soft); border-color: transparent; }
+  .pill.pos { color: var(--pos); background: rgba(107,228,159,0.12); border-color: transparent; }
+
+  /* Hero */
+  .hero h1 { font-size: 72px; line-height: 0.98; letter-spacing: -0.035em; font-weight: 500; margin: 0 0 28px; }
+  .hero .sub { font-size: 22px; line-height: 1.5; color: var(--text-dim); max-width: 720px; margin: 0; }
+
+  /* Sections */
+  section { margin-top: 96px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc); margin-bottom: 18px; }
+  h2 { font-size: 36px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500; margin: 0 0 18px; }
+  h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; }
+  p { color: var(--text-dim); margin: 0 0 14px; }
+  p.lead { font-size: 19px; line-height: 1.55; color: var(--text); }
+
+  /* Stat row */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 32px; }
+  .stat { padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+  .stat .v { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .stat .l { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+
+  /* List */
+  ul.clean { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-direction: column; gap: 14px; }
+  ul.clean li { padding-left: 28px; position: relative; font-size: 16px; line-height: 1.5; color: var(--text-dim); }
+  ul.clean li::before { content: '→'; position: absolute; left: 0; top: 0; color: var(--acc); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  ul.clean li strong { color: var(--text); font-weight: 600; }
+
+  /* Card grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  .card { padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+
+  /* Asset links */
+  .assets { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+  .asset {
+    padding: 18px 22px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; display: flex; align-items: center; gap: 16px;
+    text-decoration: none; color: inherit; transition: all .15s;
+  }
+  .asset:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .asset .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; }
+  .asset .name { font-size: 15px; font-weight: 600; margin-top: 2px; }
+  .asset .meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+  .asset .arrow { margin-left: auto; color: var(--text-muted); }
+
+  /* Equity highlight */
+  .equity { padding: 32px; border-radius: 18px; background: linear-gradient(135deg, var(--acc-soft), transparent 70%), var(--surface); border: 1px solid var(--border-strong); border-left: 3px solid var(--acc); margin-top: 32px; }
+  .equity .big { font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--acc); }
+  .equity .small { font-size: 13px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* Phase */
+  .phases { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+  .phase {
+    padding: 18px 22px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center;
+  }
+  .phase .when { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--acc); }
+  .phase .what { font-size: 15px; line-height: 1.5; }
+  .phase .what strong { color: var(--text); }
+
+  /* CTA */
+  .cta { margin-top: 56px; padding: 40px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border-strong); }
+  .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px;
+    background: var(--acc); color: var(--acc-ink); font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; font-weight: 600; text-decoration: none; border: 0; cursor: pointer;
+    transition: all .15s; letter-spacing: -0.005em;
+  }
+  .btn:hover { filter: brightness(1.1); box-shadow: 0 0 24px var(--acc-soft); }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
+
+  /* Honest section */
+  .honest {
+    padding: 28px 32px; border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--text-muted);
+    margin-top: 24px;
+  }
+
+  /* Footer */
+  footer { margin-top: 100px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+
+  @media (max-width: 720px) {
+    .page { padding: 56px 24px 80px; }
+    .hero h1 { font-size: 52px; }
+    .grid-2, .stats, .assets { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="glow"></div>
+
+  <!-- Brand header -->
+  <header class="brand">
+    <span class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg>
+      Stackly
+    </span>
+    <span class="mono" style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em;">CTO BRIEF · MAI 2026</span>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="pill ai" style="margin-bottom: 28px;"><span class="dot"></span> Procurando CTO co-founder</div>
+    <h1>
+      Construa a<br>
+      <span class="ital acc">infraestrutura inteligente</span><br>
+      do mercado SaaS.
+    </h1>
+    <p class="sub">
+      Estamos buscando um sócio técnico para liderar a engenharia do Stackly do MVP até a escala. Não é uma vaga — é uma cadeira de co-founder. Trinta porcento, decisões técnicas suas, e um produto que pode virar a infraestrutura padrão de descoberta de SaaS no Brasil.
+    </p>
+  </div>
+
+  <!-- THE OPPORTUNITY -->
+  <section>
+    <div class="eyebrow">01 · A oportunidade</div>
+    <h2>Um mercado de US$ 720B<br>sem porta de entrada inteligente.</h2>
+    <p class="lead">
+      Existem mais de 38 mil ferramentas SaaS no mercado. Uma PME brasileira gasta em média 7 dias escolhendo uma — e 40% se arrepende em 6 meses. G2, Capterra e Product Hunt são catálogos passivos em inglês. Ninguém monta a stack inteira de um negócio em minutos, com IA que entende o contexto local.
+    </p>
+
+    <p style="margin-top: 24px;">
+      Stackly é marketplace + consultor IA + marketplace de agentes. Inspirações: <strong style="color: var(--text);">Stripe</strong> (rigor), <strong style="color: var(--text);">Linear</strong> (clareza), <strong style="color: var(--text);">App Store</strong> (distribuição). A tese: a próxima década do SaaS BR/LATAM tem o lugar do <em>"como eu escolho?"</em> sendo dominado por quem juntar dados + IA + comunidade primeiro.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="v">US$ 720B</div>
+        <div class="l">TAM global · SaaS + IA até 2030</div>
+      </div>
+      <div class="stat">
+        <div class="v">21M</div>
+        <div class="l">PMEs no Brasil · &lt;10% digitalizadas</div>
+      </div>
+      <div class="stat">
+        <div class="v">US$ 240M</div>
+        <div class="l">SOM BR em 3 anos (modelo)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALREADY DONE -->
+  <section>
+    <div class="eyebrow">02 · O que já existe</div>
+    <h2>Você não está começando<br>do zero.</h2>
+    <p>
+      Antes de você entrar, o seguinte está pronto e validado:
+    </p>
+    <ul class="clean">
+      <li><strong>Protótipo navegável</strong> — 17 telas em alta fidelidade cobrindo todo o produto</li>
+      <li><strong>Pitch deck</strong> — 12 slides em 1920×1080 com tese, mercado, produto, monetização, roadmap</li>
+      <li><strong>Brandbook completo</strong> — logo, paleta, tipografia, voz, OG image, padrões</li>
+      <li><strong>Engineering blueprint</strong> — stack, arquitetura, schema, API, roadmap MVP em 20 semanas</li>
+      <li><strong>Identidade da marca registrada</strong> — domínio, CNPJ, marca</li>
+      <li><strong>Tese validada</strong> — entrevistas com 30+ donos de SaaS BR e 50+ usuários</li>
+    </ul>
+
+    <div class="assets">
+      <a class="asset" href="index.html">
+        <div>
+          <div class="num">A1 · DESIGN</div>
+          <div class="name">Protótipo navegável</div>
+          <div class="meta">17 telas · canvas + iPhone</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="asset" href="deck.html">
+        <div>
+          <div class="num">A2 · PITCH</div>
+          <div class="name">Pitch deck</div>
+          <div class="meta">12 slides · 1920×1080</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="asset" href="brandbook.html">
+        <div>
+          <div class="num">A3 · MARCA</div>
+          <div class="name">Brandbook v1.0</div>
+          <div class="meta">12 capítulos · sistema completo</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="asset" href="engineering.html">
+        <div>
+          <div class="num">A4 · TÉCNICO</div>
+          <div class="name">Engineering Blueprint</div>
+          <div class="meta">stack + schema + API + roadmap</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- THE PROFILE -->
+  <section>
+    <div class="eyebrow">03 · Quem buscamos</div>
+    <h2>Pessoa, não currículo.</h2>
+    <p class="lead">
+      O perfil técnico ideal — mas o que pesa mais é o "como" você pensa, não o "o que" você fez.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Experiência</h3>
+        <ul class="clean" style="margin-top: 14px; gap: 8px;">
+          <li><strong>5–10 anos</strong> construindo produtos de internet em TypeScript</li>
+          <li>Já lançou pelo menos um produto seu — side-project conta</li>
+          <li>Confortável com <strong>Postgres, Next.js, embeddings/LLMs</strong></li>
+          <li>Conhece <strong>function calling</strong> e RAG na prática</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Mentalidade</h3>
+        <ul class="clean" style="margin-top: 14px; gap: 8px;">
+          <li>Acredita em <strong>boring tech</strong> — não quer reinventar</li>
+          <li>Lê código antes de opinar; opina sem cerimônia</li>
+          <li>Toma decisões com 70% de informação, ajusta depois</li>
+          <li>Senso estético — UI bonita importa pra você</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Aceleradores</h3>
+        <ul class="clean" style="margin-top: 14px; gap: 8px;">
+          <li>Usa <strong>Claude Code / Cursor</strong> no dia-a-dia</li>
+          <li>Experiência com <strong>pgvector / Pinecone</strong></li>
+          <li>Já operou <strong>Stripe / billing</strong> em produção</li>
+          <li>Já fundou ou foi early eng em startup</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Sinais negativos</h3>
+        <ul class="clean" style="margin-top: 14px; gap: 8px;">
+          <li>Quer "arquitetar" antes de codar</li>
+          <li>Microserviços para tudo</li>
+          <li>Só topa CLT, sem stomach pra equity</li>
+          <li>Acha que IA é hype</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE OFFER -->
+  <section>
+    <div class="eyebrow">04 · O que oferecemos</div>
+    <h2>Sócio. Não funcionário.</h2>
+
+    <div class="equity">
+      <div class="small">Equity · cliffed em 1 ano · vesting de 4 anos</div>
+      <div class="big">25–35%</div>
+      <div style="margin-top: 16px; font-size: 15px; line-height: 1.55; color: var(--text-dim);">
+        Range exato depende do que você traz à mesa — senioridade, network, capacidade de levantar capital, tempo disponível, dedicação full-time vs partial. Vesting <span class="acc">accelera 50%</span> se levantarmos Série A. Você é co-founder de verdade — assina o contrato social, decide com o board, fala com investidor.
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 16px;">
+      <div class="card">
+        <h3>Pré-fundraise · 3-6 meses</h3>
+        <p style="font-size: 14px; line-height: 1.55; margin: 8px 0 0;">
+          Salário simbólico ou zero. Estamos bootstrapping até o sinal de mercado. Cobertura de custos de vida pode ser negociada se necessário.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Pós-seed · a partir do mês 6-9</h3>
+        <p style="font-size: 14px; line-height: 1.55; margin: 8px 0 0;">
+          Salário de mercado (R$ 25-35k/mês CLT ou equivalente PJ) assim que levantarmos. Top of band para senioridade comprovada.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Autonomia total na engenharia</h3>
+        <p style="font-size: 14px; line-height: 1.55; margin: 8px 0 0;">
+          Você decide stack, arquitetura, contratação. Eu cuido de product, sales, fundraise. Cada um manda no seu domínio com confiança no outro.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Remoto · São Paulo preferível</h3>
+        <p style="font-size: 14px; line-height: 1.55; margin: 8px 0 0;">
+          Trabalho remoto desde o dia 1. Co-working em SP para encontros semanais. Off-sites trimestrais quando crescer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 90 DAYS -->
+  <section>
+    <div class="eyebrow">05 · Os primeiros 90 dias</div>
+    <h2>O que faremos juntos<br>nos próximos três meses.</h2>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="when">Sem 1-2</div>
+        <div class="what">
+          <strong>Setup &amp; alinhamento.</strong> Você revisa o blueprint técnico, propõe ajustes onde discorda. Configuramos a stack, repositório, CI/CD. Primeiro deploy na main.
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Sem 3-6</div>
+        <div class="what">
+          <strong>Catálogo público no ar.</strong> Tabelas de produto, busca, listagem, perfis SSR, sitemap. Site indexado pelo Google. 100 produtos seed importados de planilha.
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Sem 7-10</div>
+        <div class="what">
+          <strong>Consultor IA funcionando.</strong> Embeddings em pgvector, chat streaming, function calling, stack generator. 30 pessoas externas testam sem reportar erro grave.
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Sem 11-13</div>
+        <div class="what">
+          <strong>Primeiros pagantes.</strong> Onboarding do anunciante, Stripe checkout, PIX via Asaas, dashboard. Critério de "fim do trimestre": <span class="acc">10 anunciantes pagando</span>, mesmo que em beta.
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 24px; font-size: 14px; color: var(--text-muted); line-height: 1.55;">
+      A partir daí: revisamos juntos. Se a tese mostrou sinal, levantamos seed e contratamos o primeiro dev. Se não, pivota ou para com aprendizado real e tempo bem investido.
+    </p>
+  </section>
+
+  <!-- HONEST -->
+  <section>
+    <div class="eyebrow">06 · O que é honesto dizer</div>
+    <h2>Riscos. Trade-offs.<br>O que pode dar errado.</h2>
+
+    <div class="honest">
+      <h3 style="margin-bottom: 12px;">Você pode trabalhar 4 meses e a tese não validar.</h3>
+      <p style="font-size: 14px; margin: 0; line-height: 1.6;">
+        Marketplaces de SaaS já fracassaram antes. A diferença que apostamos: IA como diferencial e o vácuo regional brasileiro. Se em 6 meses não tivermos sinal claro (PMF light), conversamos sobre pivô. Equity vesta proporcionalmente — você não sai com nada se for cedo demais, mas também não fica preso a algo que não funciona.
+      </p>
+    </div>
+
+    <div class="honest">
+      <h3 style="margin-bottom: 12px;">Vamos ter dinheiro apertado nos primeiros 6 meses.</h3>
+      <p style="font-size: 14px; margin: 0; line-height: 1.6;">
+        Bootstrapping é confortável até deixar de ser. Tenho runway pessoal para 12 meses sem salário próprio. Se você precisa de salário desde dia 1, esse momento não é pra você — ou conversamos sobre estrutura híbrida (consultoria pré-fundraise).
+      </p>
+    </div>
+
+    <div class="honest">
+      <h3 style="margin-bottom: 12px;">Estética e velocidade vão entrar em conflito.</h3>
+      <p style="font-size: 14px; margin: 0; line-height: 1.6;">
+        Vou querer polir o que você quer mandar pra prod. Você vai querer mandar coisa que eu acho feia. A gente vai discutir, e a decisão é negociada — não unilateral. Se isso te incomoda, melhor saber agora.
+      </p>
+    </div>
+  </section>
+
+  <!-- HOW TO TALK -->
+  <section>
+    <div class="cta">
+      <div class="eyebrow">07 · Como conversar</div>
+      <h2 style="margin-bottom: 14px;">Não é entrevista.<br>É uma conversa.</h2>
+      <p style="font-size: 16px; max-width: 640px;">
+        Me manda um email com (a) qual ponto desse documento te animou mais, (b) qual te deixou desconfortável e por quê, (c) o que você construiria primeiro. Não preciso de CV nem portfólio formal — me passa um repo, um produto que você fez, qualquer coisa que mostre seu pensamento.
+      </p>
+
+      <div class="cta-row">
+        <a href="/cdn-cgi/l/email-protection#a8cec7ddc6cccddadbe8dbdcc9cbc3c4d186cbc7c597dbddcac2cdcbdc95ebfce78d9a98cbc785EME9M9cSy9FvfHvcx2gMPkp1H5Dj4YaKufPRsAyon8Tf" class="btn">
+          <span class="__cf_email__" data-cfemail="395f564c575d5c4b4a794a4d585a525540175a5654">[email&#160;protected]</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+          <div class="mono" style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;">Resposta em até</div>
+          <div class="mono" style="font-size: 16px; font-weight: 600;">48h úteis</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;">
+        <div>
+          <div class="mono" style="font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Step 1</div>
+          <div style="font-size: 14px;">30 min de papo · zero formalidade</div>
+        </div>
+        <div>
+          <div class="mono" style="font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Step 2</div>
+          <div style="font-size: 14px;">Trabalho de 1 dia · pago · em algo real do produto</div>
+        </div>
+        <div>
+          <div class="mono" style="font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Step 3</div>
+          <div style="font-size: 14px;">Fim de semana junto · decisão até segunda</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 32px; font-size: 16px; line-height: 1.6; color: var(--text-dim); text-align: center;">
+      <span class="ital" style="font-size: 22px;">Se você leu até aqui e está pensando "isso é exatamente o tipo de coisa que eu quero construir", então é. Me escreve.</span>
+    </p>
+  </section>
+
+  <footer>
+    <span>Stackly · brief v1.0 · confidencial</span>
+    <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2b4bda7bcb6b7a0a192a1a6b3b1b9beabfcb1bdbf">[email&#160;protected]</a></span>
+  </footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
