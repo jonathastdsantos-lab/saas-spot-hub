@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Stackly — A infraestrutura inteligente do mercado SaaS</title>
+<meta name="description" content="Conte o que você precisa. A IA monta a stack inteira — CRM, WhatsApp, ERP, agentes. Comparada, integrada, no seu orçamento. Em segundos.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stackly.com/">
+<meta property="og:title" content="Stackly — A infraestrutura inteligente do mercado SaaS">
+<meta property="og:description" content="Conte o que você precisa. A IA monta a stack inteira.">
+<meta property="og:image" content="https://stackly.com/og.png">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="Stackly — A infraestrutura inteligente do mercado SaaS">
+<meta property="twitter:description" content="Conte o que você precisa. A IA monta a stack inteira.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Favicon (inline SVG) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23C8FF3E'/%3E%3Crect x='3' y='4' width='14' height='4' rx='1.5' fill='%230A0A0B'/%3E%3Crect x='6' y='10' width='14' height='4' rx='1.5' fill='%230A0A0B' opacity='0.6'/%3E%3Crect x='3' y='16' width='14' height='4' rx='1.5' fill='%230A0A0B' opacity='0.35'/%3E%3C/svg%3E">
+
+<style>
+  :root {
+    --acc: #C8FF3E;
+    --acc-ink: #0A0A0B;
+    --acc-soft: rgba(200,255,62,0.16);
+    --acc-glow: rgba(200,255,62,0.45);
+    --ai: #9D7CFE;
+    --ai-soft: rgba(157,124,254,0.18);
+    --pos: #6BE49F;
+    --bg: #0A0A0C;
+    --surface: #15151A;
+    --surface-2: #1B1B21;
+    --surface-3: #232329;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #F5F5F7;
+    --text-dim: #A6A8AE;
+    --text-muted: #6A6D75;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  body {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    font-size: 16px; line-height: 1.55; letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .ital { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; }
+  .acc { color: var(--acc); }
+  .dim { color: var(--text-dim); }
+  .muted { color: var(--text-muted); }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* Layout */
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (max-width: 720px) { .wrap { padding: 0 20px; } }
+
+  /* Nav */
+  nav.top {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,12,0.7);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.top .inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+  nav.top .links { display: flex; gap: 28px; align-items: center; }
+  nav.top .links a { font-size: 14px; color: var(--text-dim); transition: color .15s; }
+  nav.top .links a:hover { color: var(--text); }
+  @media (max-width: 720px) { nav.top .links a { display: none; } nav.top .links .btn-mini { display: inline-flex; } }
+  .btn-mini {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13px; color: var(--text-dim);
+    transition: all .15s;
+  }
+  .btn-mini:hover { background: var(--surface-3); color: var(--text); }
+
+  /* Pill */
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--text-dim); letter-spacing: 0.04em;
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2.5s infinite; }
+  .pill.ai { color: var(--ai); background: var(--ai-soft); border-color: transparent; }
+  .pill.acc { color: var(--acc); background: var(--acc-soft); border-color: transparent; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* HERO */
+  .hero { position: relative; padding: 96px 0 80px; overflow: hidden; }
+  .hero .glow {
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 1100px; height: 750px; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse, var(--ai-soft) 0%, transparent 65%);
+    filter: blur(40px);
+  }
+  .hero .grid-bg {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 75%);
+  }
+  .hero .inner { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; text-align: center; }
+  .hero h1 {
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    margin: 24px 0 24px;
+  }
+  .hero .sub {
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.55; color: var(--text-dim);
+    max-width: 620px; margin: 0 auto;
+  }
+
+  /* Form */
+  form.waitlist {
+    margin-top: 44px;
+    display: flex; gap: 8px; align-items: center;
+    padding: 8px 8px 8px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    max-width: 540px; margin-left: auto; margin-right: auto;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 6px var(--ai-soft);
+    transition: box-shadow .2s;
+  }
+  form.waitlist:focus-within { box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 6px var(--acc-soft); }
+  form.waitlist svg.spark { color: var(--ai); flex-shrink: 0; transition: color .2s; }
+  form.waitlist:focus-within svg.spark { color: var(--acc); }
+  form.waitlist input {
+    flex: 1; background: transparent; border: 0; outline: 0; min-width: 0;
+    color: var(--text); font-family: inherit; font-size: 15px;
+    padding: 8px 0;
+  }
+  form.waitlist input::placeholder { color: var(--text-muted); }
+  form.waitlist button {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 18px; border-radius: 10px;
+    background: var(--acc); color: var(--acc-ink);
+    border: 0; font-weight: 600; font-size: 14px;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  form.waitlist button:hover { filter: brightness(1.08); box-shadow: 0 0 28px var(--acc-glow); }
+  form.waitlist button:disabled { opacity: 0.5; cursor: not-allowed; }
+  form.waitlist .arr svg { transition: transform .15s; }
+  form.waitlist button:hover .arr svg { transform: translateX(2px); }
+  @media (max-width: 540px) {
+    form.waitlist { flex-direction: column; align-items: stretch; padding: 12px; }
+    form.waitlist svg.spark { display: none; }
+    form.waitlist input { padding: 6px 8px; }
+  }
+
+  .form-meta { margin-top: 14px; font-size: 12.5px; color: var(--text-muted); }
+  .form-meta .mono { letter-spacing: 0.04em; }
+
+  /* Success state */
+  .success-message {
+    display: none;
+    padding: 22px;
+    background: rgba(107,228,159,0.08); border: 1px solid rgba(107,228,159,0.3);
+    border-radius: 14px;
+    color: var(--pos);
+    max-width: 540px; margin: 44px auto 0;
+    text-align: center;
+  }
+  .success-message.visible { display: block; animation: slideIn .35s ease-out; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .success-message strong { color: var(--text); display: block; font-size: 17px; margin-bottom: 4px; }
+
+  /* Suggestion chips */
+  .chips { display: flex; gap: 8px; justify-content: center; margin-top: 22px; flex-wrap: wrap; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  .chip svg { color: var(--ai); }
+
+  /* Counter */
+  .counter { margin-top: 56px; display: inline-flex; align-items: center; gap: 18px; padding: 10px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; }
+  .counter .n { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600; color: var(--text); }
+  .counter .l { font-size: 12px; color: var(--text-muted); }
+  .counter .avatars { display: flex; }
+  .counter .av { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--bg); display: inline-block; font-size: 10px; color: var(--text); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; margin-left: -8px; }
+  .counter .av:first-child { margin-left: 0; }
+
+  /* SECTION SCAFFOLD */
+  section.body { padding: 88px 0; border-top: 1px solid var(--border); }
+  section.body .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--acc); margin-bottom: 18px;
+    display: inline-block;
+  }
+  section.body h2 {
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.05; letter-spacing: -0.025em; font-weight: 500;
+    margin: 0 0 18px; max-width: 900px;
+  }
+  section.body .lead {
+    font-size: 19px; line-height: 1.5; color: var(--text-dim);
+    max-width: 680px; margin: 0 0 56px;
+  }
+
+  /* Audience split */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
+  .audience {
+    padding: 36px; border-radius: 18px;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .audience.user {
+    background: linear-gradient(180deg, var(--acc-soft), transparent 50%), var(--surface);
+    border-color: rgba(200,255,62,0.3);
+  }
+  .audience.advertiser {
+    background: linear-gradient(180deg, var(--ai-soft), transparent 50%), var(--surface);
+    border-color: rgba(157,124,254,0.3);
+  }
+  .audience .ki {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .audience.user .ki { color: var(--acc); }
+  .audience.advertiser .ki { color: var(--ai); }
+  .audience h3 {
+    font-size: 26px; line-height: 1.15; letter-spacing: -0.015em;
+    font-weight: 500; margin: 0;
+  }
+  .audience p { font-size: 15px; line-height: 1.55; color: var(--text-dim); margin: 0; }
+  .audience ul { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  .audience ul li { padding-left: 24px; position: relative; font-size: 14.5px; color: var(--text-dim); line-height: 1.5; }
+  .audience ul li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--acc); font-weight: 600; }
+  .audience.advertiser ul li::before { color: var(--ai); }
+  .audience .ad-cta {
+    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .ad-cta a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; border-radius: 9px;
+    font-size: 13px; font-weight: 600;
+    transition: all .15s;
+  }
+  .audience.user .ad-cta a { background: var(--text); color: var(--bg); }
+  .audience.advertiser .ad-cta a { background: var(--ai); color: #fff; }
+  .ad-cta a:hover { filter: brightness(1.08); }
+  .audience .stat-mini { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
+
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    padding: 28px; border-radius: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px; font-weight: 600;
+    color: var(--acc); letter-spacing: -0.02em; line-height: 1;
+  }
+  .step h3 { font-size: 19px; font-weight: 600; margin: 18px 0 8px; }
+  .step p { font-size: 14px; color: var(--text-dim); line-height: 1.55; margin: 0; }
+
+  /* Features grid */
+  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .features { grid-template-columns: 1fr; } }
+  .feature {
+    padding: 22px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .feature .icon-w {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: var(--acc-soft); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .feature.ai-f .icon-w { background: var(--ai-soft); }
+  .feature h4 { font-size: 15px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.005em; }
+  .feature p { font-size: 13.5px; color: var(--text-dim); line-height: 1.5; margin: 0; }
+
+  /* Submit CTA — for SaaS owners */
+  .submit-cta {
+    padding: 56px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--acc-soft), transparent 70%), var(--surface);
+    border: 1px solid var(--border-strong);
+    border-left: 3px solid var(--acc);
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+  }
+  @media (max-width: 800px) { .submit-cta { grid-template-columns: 1fr; padding: 36px; } }
+  .submit-cta h2 { margin: 0 0 12px; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.025em; }
+  .submit-cta p { font-size: 16px; color: var(--text-dim); margin: 0; max-width: 540px; line-height: 1.55; }
+  .submit-cta .actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+  @media (max-width: 800px) { .submit-cta .actions { align-items: flex-start; } }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px; border-radius: 12px;
+    background: var(--acc); color: var(--acc-ink);
+    font-size: 15px; font-weight: 600; white-space: nowrap;
+    border: 0; transition: all .15s;
+  }
+  .btn:hover { filter: brightness(1.08); box-shadow: 0 0 28px var(--acc-glow); transform: translateY(-1px); }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 4px; }
+  .faq details {
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq details:first-child { border-top: 1px solid var(--border); }
+  .faq summary {
+    padding: 22px 0;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-size: 17px; font-weight: 500;
+    list-style: none;
+    transition: color .15s;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary:hover { color: var(--acc); }
+  .faq summary::after {
+    content: '+';
+    font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400;
+    color: var(--text-muted); transition: transform .2s, color .15s;
+  }
+  .faq details[open] summary::after { content: '−'; color: var(--acc); }
+  .faq details[open] summary { color: var(--acc); }
+  .faq .answer {
+    padding: 0 0 22px;
+    font-size: 15px; color: var(--text-dim); line-height: 1.6;
+    max-width: 800px;
+  }
+
+  /* Footer */
+  footer.foot {
+    border-top: 1px solid var(--border);
+    padding: 56px 0 32px;
+  }
+  footer.foot .row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 800px) { footer.foot .row { grid-template-columns: 1fr 1fr; gap: 32px; } }
+  footer .col h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 14px; }
+  footer .col a { display: block; font-size: 14px; color: var(--text-dim); padding: 4px 0; transition: color .15s; }
+  footer .col a:hover { color: var(--text); }
+  footer .tagline { font-size: 14px; color: var(--text-dim); margin: 14px 0 0; max-width: 320px; line-height: 1.5; }
+  footer .bot { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  @media (max-width: 600px) { footer .bot { flex-direction: column; gap: 12px; text-align: center; } }
+
+  /* Big background letters */
+  .bgword {
+    position: absolute; font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic; font-size: clamp(120px, 22vw, 320px);
+    color: rgba(255,255,255,0.015); line-height: 1; pointer-events: none;
+    user-select: none; letter-spacing: -0.04em;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<nav class="top">
+  <div class="wrap inner">
+    <a href="#" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg>
+      Stackly
+    </a>
+    <div class="links">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#features">O que vem aí</a>
+      <a href="#faq">FAQ</a>
+      <a href="#anuncie" class="btn-mini">Anuncie seu SaaS</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+  <div class="glow"></div>
+  <div class="grid-bg"></div>
+
+  <div class="wrap inner">
+    <div class="pill ai"><span class="dot"></span> Lançamento em outubro · 2.847 SaaS já curados</div>
+
+    <h1>
+      A infraestrutura<br>
+      <span class="ital acc">inteligente</span> do<br>
+      mercado SaaS.
+    </h1>
+
+    <p class="sub">
+      Conte o que você precisa. A IA monta a stack inteira — CRM, WhatsApp, ERP, agentes. Comparada, integrada, no seu orçamento. <strong style="color: var(--text);">Em segundos.</strong>
+    </p>
+
+    <!-- Waitlist form -->
+    <!-- SETUP: substitua FORMSPREE_WAITLIST_ID pelo seu ID (ex: xyznabcd) -->
+    <form class="waitlist" id="waitlist-form" action="https://formspree.io/f/FORMSPREE_WAITLIST_ID" method="POST">
+      <svg class="spark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>
+      </svg>
+      <input type="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+      <button type="submit" id="submit-btn">
+        Entrar na lista
+        <span class="arr">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </span>
+      </button>
+    </form>
+
+    <div class="success-message" id="success-msg">
+      <strong>Você está dentro.</strong>
+      Mandamos um email pra confirmar. Te avisamos uma única vez, no dia do lançamento.
+    </div>
+
+    <div class="form-meta">
+      <span class="mono">+ 1.247</span> pessoas na lista · Acesso antecipado · Zero spam
+    </div>
+
+    <div class="chips">
+      <span class="chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        CRM para salão com WhatsApp
+      </span>
+      <span class="chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        Alternativas ao Notion
+      </span>
+      <span class="chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        IA para qualificar leads
+      </span>
+      <span class="chip">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        ERP para oficina mecânica
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== AUDIENCES ==================== -->
+<section class="body">
+  <div class="wrap">
+    <div class="eyebrow">Para quem</div>
+    <h2>Dois lados.<br>A mesma <span class="ital acc">infraestrutura</span>.</h2>
+    <p class="lead">Stackly é onde quem busca encontra. E onde quem oferece é encontrado por quem realmente vai contratar.</p>
+
+    <div class="split">
+      <div class="audience user">
+        <div class="ki">Para quem busca</div>
+        <h3>Empresas, agências, freelancers.<br>O fim do "qual software usar?".</h3>
+        <p>
+          O consultor IA entende seu negócio, seu nicho, seu orçamento. Recomenda — e monta — a stack inteira em 1 minuto.
+        </p>
+        <ul>
+          <li>Consultor IA conversacional · entende contexto</li>
+          <li>Gerador de stack · CRM + WhatsApp + ERP + IA</li>
+          <li>Comparador lado a lado com veredito da IA</li>
+          <li>Reviews verificadas por quem realmente usa</li>
+          <li>Migrador entre plataformas (HubSpot → X)</li>
+        </ul>
+        <div class="ad-cta">
+          <span class="stat-mini">2.847 SaaS curados · 156k avaliações</span>
+          <a href="#waitlist-form" onclick="document.querySelector('#waitlist-form input').focus(); return false;">
+            Entrar na lista
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="audience advertiser" id="anuncie">
+        <div class="ki">Para quem anuncia</div>
+        <h3>Donos de SaaS, agências white-label.<br>Aquisição que se retroalimenta.</h3>
+        <p>
+          Perfil rico, ranqueamento no SaaS Score™, leads qualificados pela IA. Você só fala com quem já entendeu o produto.
+        </p>
+        <ul>
+          <li>Perfil completo com vídeo, prints, planos</li>
+          <li>SaaS Score™ baseado em 11 dimensões</li>
+          <li>Aparição em rankings curados por nicho</li>
+          <li>Dashboard com tráfego, leads, comparações</li>
+          <li>Resposta automática a reviews (com IA)</li>
+        </ul>
+        <div class="ad-cta">
+          <span class="stat-mini">Grátis para começar · CPA + CPC pago só por resultado</span>
+          <a href="#submit-form" onclick="document.querySelector('#submit-form input').focus(); return false;">
+            Anunciar meu SaaS
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="body" id="como-funciona">
+  <div class="wrap">
+    <div class="eyebrow">Como funciona</div>
+    <h2>Três passos.<br>Sem planilha.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Você descreve</h3>
+        <p>
+          Em português simples: "preciso de um CRM com WhatsApp para clínica de estética em SP, 4 funcionárias, orçamento R$ 500/mês".
+        </p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>A IA recomenda</h3>
+        <p>
+          Consulta nosso banco de 2.847 SaaS. Compara preço, integrações, reviews. Calcula ROI. Apresenta a stack ideal — não 50 opções, <em>a</em> opção.
+        </p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Você contrata</h3>
+        <p>
+          Tudo dentro do Stackly. Trial grátis, descontos exclusivos, integrações pré-configuradas. Você sai com o produto rodando, não com tarefas.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FEATURES (coming soon) ==================== -->
+<section class="body" id="features">
+  <div class="wrap">
+    <div class="eyebrow">Em breve</div>
+    <h2>Mais do que <span class="ital acc">marketplace</span>.<br>Um ecossistema.</h2>
+    <p class="lead">As funções abaixo já estão em desenvolvimento ou no roadmap dos primeiros 6 meses.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><path d="M3 6h14M3 12h10M3 18h6"/></svg>
+        </div>
+        <h4>Consultor IA</h4>
+        <p>Chat conversacional que entende seu negócio e recomenda stack.</p>
+      </div>
+      <div class="feature">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>
+        </div>
+        <h4>SaaS Score™</h4>
+        <p>11 dimensões avaliadas. Algoritmo proprietário não-comprável.</p>
+      </div>
+      <div class="feature ai-f">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" stroke-width="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        </div>
+        <h4>Marketplace de Agentes</h4>
+        <p>Closer GPT, SAC 24h, Cobrador. Instale em 2 cliques.</p>
+      </div>
+      <div class="feature">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><circle cx="9" cy="9" r="3"/><circle cx="15" cy="15" r="3"/><circle cx="15" cy="6" r="2"/><circle cx="6" cy="15" r="2"/><path d="M11 9l4 4"/></svg>
+        </div>
+        <h4>Mapa de Integrações</h4>
+        <p>Visualize como suas ferramentas se conectam. Automações prontas.</p>
+      </div>
+      <div class="feature ai-f">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </div>
+        <h4>Comparador</h4>
+        <p>Lado a lado, com veredito de IA: "ganha em 9 de 14 critérios".</p>
+      </div>
+      <div class="feature">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><path d="M4 14a8 8 0 0116 0v4a3 3 0 01-3 3h-2v-7h5M4 14v4a3 3 0 003 3h2v-7H4"/></svg>
+        </div>
+        <h4>Rankings curados</h4>
+        <p>"Melhores CRM para salão". Editorial + reviews verificadas.</p>
+      </div>
+      <div class="feature ai-f">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" stroke-width="1.8"><path d="M12 4l8 10H4z"/></svg>
+        </div>
+        <h4>Stacks compartilháveis</h4>
+        <p>"A stack do dono da clínica X". Copie, edite, contrate.</p>
+      </div>
+      <div class="feature">
+        <div class="icon-w">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><path d="M5 12l5 5 9-11"/></svg>
+        </div>
+        <h4>Migrador</h4>
+        <p>Trocar plataforma sem perder dados. HubSpot → Fluxia em 1 dia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SUBMIT YOUR SAAS ==================== -->
+<section class="body">
+  <div class="wrap">
+    <div class="submit-cta">
+      <div>
+        <div class="eyebrow">Para donos de SaaS</div>
+        <h2>Seja um dos<br>primeiros <span class="ital acc">100</span>.</h2>
+        <p>
+          Os 100 primeiros SaaS cadastrados ganham <strong style="color: var(--text);">Plano Pro grátis por 12 meses</strong>, badge de "Founding Partner" e prioridade nos rankings durante o lançamento.
+        </p>
+      </div>
+      <div class="actions">
+        <!-- SETUP: substitua FORMSPREE_SAAS_ID pelo seu ID (ex: abcd1234) -->
+        <form id="submit-form" action="https://formspree.io/f/FORMSPREE_SAAS_ID" method="POST" style="display: flex; flex-direction: column; gap: 8px; min-width: 280px;">
+          <input type="text" name="saas_name" placeholder="Nome do seu SaaS" required
+            style="padding: 12px 14px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 14px;">
+          <input type="url" name="saas_url" placeholder="https://seusaas.com" required
+            style="padding: 12px 14px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 14px;">
+          <input type="email" name="email" placeholder="Seu email" required
+            style="padding: 12px 14px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 14px;">
+          <button type="submit" class="btn" style="justify-content: center; margin-top: 4px;">
+            Reservar minha vaga
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+        <div class="success-message" id="submit-success" style="margin: 0; max-width: 280px;">
+          <strong>Vaga reservada.</strong>
+          Nosso time entra em contato em 48h.
+        </div>
+        <div class="mono" style="font-size: 11px; color: var(--text-muted); letter-spacing: 0.04em;">
+          47/100 vagas preenchidas
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section class="body" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Perguntas frequentes</div>
+    <h2>O que você quer<br>saber antes de entrar.</h2>
+
+    <div class="faq" style="margin-top: 32px;">
+      <details>
+        <summary>Quando o Stackly lança?</summary>
+        <div class="answer">Beta privado em outubro de 2026, com prioridade para a lista. Lançamento público até dezembro. Quem entra na waitlist agora ganha acesso antecipado.</div>
+      </details>
+      <details>
+        <summary>Como vocês são diferentes de G2, Capterra e Product Hunt?</summary>
+        <div class="answer">Eles são <strong>catálogos passivos em inglês</strong>. Stackly é <strong>consultor ativo em português brasileiro</strong>. Eles listam — nós recomendamos, comparamos e montamos a stack inteira. Eles te dão 50 opções; nós te damos a opção certa pro seu contexto.</div>
+      </details>
+      <details>
+        <summary>Como ganham dinheiro?</summary>
+        <div class="answer">Para quem busca: <strong>grátis</strong>. Plano Pro opcional (R$ 39/mês) com consultas ilimitadas. Para quem anuncia: assinatura escalonada (Free → Enterprise), comissão por venda fechada e patrocínio de destaque. Nunca vendemos seus dados.</div>
+      </details>
+      <details>
+        <summary>Como funciona o SaaS Score™?</summary>
+        <div class="answer">Algoritmo proprietário com 11 dimensões: reviews verificadas (30%), suporte, custo-benefício, integrações, modernidade da IA, estabilidade, sentimento (LLM). Reviews falsas são detectadas e descartadas. Score é recalculado de hora em hora, não em tempo real — anti-gaming.</div>
+      </details>
+      <details>
+        <summary>É grátis para começar?</summary>
+        <div class="answer">Sim. Para quem busca, o uso básico é gratuito. Para quem anuncia, o plano Free permite cadastrar 1 produto com perfil completo. Cobramos quando você quer destaque, leads qualificados ou recursos avançados.</div>
+      </details>
+      <details>
+        <summary>Sou dono de um SaaS. Como entro?</summary>
+        <div class="answer">Use o formulário acima de "Reservar minha vaga". Estamos curando os primeiros 100 SaaS para o lançamento — quem entra antes do lançamento ganha 12 meses de Plano Pro grátis e badge de Founding Partner.</div>
+      </details>
+      <details>
+        <summary>Estão contratando?</summary>
+        <div class="answer">Estamos buscando um <strong>CTO co-founder</strong> agora. Se você é eng sênior com experiência em TypeScript/Postgres/LLMs e quer construir algo do zero, manda email pra <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="EME9M9cSy9FvfHvcx2gMPkp1H5Dj4YaKufPRsAyon8Tf">[email&#160;protected]</a> com o seu github.</div>
+      </details>
+      <details>
+        <summary>De onde vem o nome?</summary>
+        <div class="answer"><strong>Stack</strong> é o conjunto de ferramentas que faz seu negócio rodar. <strong>-ly</strong> é o sufixo adverbial em inglês — "de modo X". Stackly = "de modo stack". Curto, internacionalizável, soa moderno em qualquer idioma.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="row">
+      <div class="col">
+        <a href="#" class="logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+            <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+            <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+          </svg>
+          Stackly
+        </a>
+        <p class="tagline">A infraestrutura inteligente do mercado SaaS.</p>
+      </div>
+      <div class="col">
+        <h5>Produto</h5>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#features">O que vem aí</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="col">
+        <h5>Para anunciantes</h5>
+        <a href="#anuncie">Como anunciar</a>
+        <a href="#anuncie">Planos</a>
+        <a href="/cdn-cgi/l/email-protection#26564754524843545566555247454d4a5f0845494b">Parcerias</a>
+      </div>
+      <div class="col">
+        <h5>Empresa</h5>
+        <a href="/cdn-cgi/l/email-protection#77111802191312050437040316141c1b0e5914181a">Contato</a>
+        <a href="/cdn-cgi/l/email-protection#bfd9d0cad1dbdacdccffcccbdedcd4d3c691dcd0d2">Trabalhe com a gente</a>
+        <a href="#">Termos · Privacidade</a>
+      </div>
+    </div>
+    <div class="bot">
+      <span>© 2026 Stackly · São Paulo · CNPJ em registro</span>
+      <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="EME9M9cSy9FvfHvcx2gMPkp1H5Dj4YaKufPRsAyon8Tf">[email&#160;protected]</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== JS ==================== -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Waitlist form handler
+  // SETUP: substitua "REPLACE_ME" pelo seu form ID do Formspree (https://formspree.io)
+  // OU troque para Tally, Loops, Resend Audiences, etc.
+  function handleForm(formId, successId) {
+    const form = document.getElementById(formId);
+    const success = document.getElementById(successId);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]');
+      const original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = 'Enviando…'; }
+
+      const data = new FormData(form);
+      const action = form.action;
+      const isConfigured = !action.includes('REPLACE_ME') && !action.includes('FORMSPREE_');
+
+      try {
+        if (isConfigured) {
+          // Real submission to Formspree
+          const res = await fetch(action, {
+            method: 'POST',
+            body: data,
+            headers: { Accept: 'application/json' }
+          });
+          if (!res.ok) throw new Error('Form submission failed');
+        } else {
+          // Demo mode: just wait 800ms
+          console.warn('Formspree not configured. Set form action to your endpoint.');
+          await new Promise(r => setTimeout(r, 800));
+        }
+
+        form.style.display = 'none';
+        if (success) success.classList.add('visible');
+      } catch (err) {
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+        alert('Algo deu errado. Tenta de novo?');
+      }
+    });
+  }
+
+  handleForm('waitlist-form', 'success-msg');
+  handleForm('submit-form', 'submit-success');
+
+  // Simple counter increment animation when in viewport
+  // (visual flair only)
+</script>
+
+</body>
+</html>
