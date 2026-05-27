@@ -1,3 +1,8 @@
+import React from 'react';
+import { Link } from '@tanstack/react-router';
+import { TopNav, Icon, LogoTile, Stars, Spark } from '../SharedUI';
+import AiSearchBox from '../AiSearchBox';
+
 // Tela 1: Home / Landing — busca IA centralizada, categorias, em destaque, rankings
 const Screen_Home = ({ products = [], categories = [] }) => {
   const featured = products.slice(0, 4);
