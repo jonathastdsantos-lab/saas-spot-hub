@@ -1,8 +1,10 @@
-'use client';
-
 import React, { useState } from 'react';
 import { TopNav, Icon, LogoTile } from '../SharedUI';
-import { submitProduct } from '../../app/onboarding/actions';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || import.meta.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Screen_Onboarding() {
   const [url, setUrl] = useState('');
@@ -24,13 +26,11 @@ export default function Screen_Onboarding() {
     setLoadingAI(true);
     setStatus({ type: '', msg: '' });
     try {
-      const res = await fetch('/api/extract-saas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
+      const { data, error } = await supabase.functions.invoke('extract-saas', {
+        body: { url }
       });
-      const data = await res.json();
-      if (res.ok) {
+      
+      if (!error && data) {
         setFormData({
           name: data.name || '',
           description: data.description || '',
@@ -40,7 +40,7 @@ export default function Screen_Onboarding() {
         });
         setStatus({ type: 'success', msg: 'Formulário preenchido pela IA com sucesso!' });
       } else {
-        setStatus({ type: 'error', msg: data.error || 'Erro na extração' });
+        setStatus({ type: 'error', msg: error?.message || 'Erro na extração' });
       }
     } catch (e) {
       setStatus({ type: 'error', msg: e.message });
@@ -56,17 +56,37 @@ export default function Screen_Onboarding() {
     e.preventDefault();
     setStatus({ type: '', msg: '' });
     
-    const form = new FormData();
-    form.append('name', formData.name);
-    form.append('description', formData.description);
-    form.append('website', url);
-    form.append('category_id', formData.category_id);
-    form.append('features', formData.features);
-    form.append('price', formData.price);
+    const { data: { user } } = await supabase.auth.getUser();
 
-    const res = await submitProduct(form);
-    if (res.error) {
-      setStatus({ type: 'error', msg: res.error });
+    if (!user) {
+      setStatus({ type: 'error', msg: 'Você precisa fazer login primeiro!' });
+      return;
+    }
+
+    const { name, description, category_id, features, price } = formData;
+
+    if (!name || !description || !category_id) {
+      setStatus({ type: 'error', msg: 'Preencha os campos obrigatórios.' });
+      return;
+    }
+
+    const tags = features ? features.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    const { error } = await supabase.from('products').insert({
+      id,
+      name,
+      description,
+      website: url,
+      category_id,
+      tags,
+      price,
+      owner_id: user.id,
+      status: 'pending'
+    });
+
+    if (error) {
+      setStatus({ type: 'error', msg: error.message });
     } else {
       setStatus({ type: 'success', msg: 'SaaS submetido para revisão com sucesso! Você será avisado quando aprovado.' });
       setFormData({ name: '', description: '', category_id: 'crm', features: '', price: '' });
