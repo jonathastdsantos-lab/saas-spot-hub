@@ -15,7 +15,7 @@ function Index() {
   const { data: products } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const { data } = await supabase.from('products').select('*');
+      const { data } = await supabase.from('products').select('*').eq('status', 'approved');
       return data || [];
     }
   });
