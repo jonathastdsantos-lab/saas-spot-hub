@@ -17,6 +17,9 @@ const Screen_Consultor = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [consultationsUsed, setConsultationsUsed] = useState(0);
+  const FREE_LIMIT = 3;
+  const [showPaywall, setShowPaywall] = useState(false);
 
   // Contexto mockado para o MVP
   const [context, setContext] = useState({
@@ -31,10 +34,16 @@ const Screen_Consultor = () => {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    if (consultationsUsed >= FREE_LIMIT) {
+      setShowPaywall(true);
+      return;
+    }
+
     const userMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    setConsultationsUsed(prev => prev + 1);
 
     try {
       // In a real scenario, map internal messages to API format:
@@ -165,12 +174,12 @@ const Screen_Consultor = () => {
               border: "1px solid var(--border)",
             }}
           >
-            <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 6 }}>Consultas restantes</div>
+            <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 6 }}>Consultas restantes (Free)</div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <strong className="sx-mono" style={{ fontSize: 16 }}>
-                23<span style={{ color: "var(--text-muted)", fontSize: 12, fontWeight: 400 }}>/30</span>
+              <strong className="sx-mono" style={{ fontSize: 16, color: consultationsUsed >= FREE_LIMIT ? "var(--neg)" : "inherit" }}>
+                {FREE_LIMIT - consultationsUsed}<span style={{ color: "var(--text-muted)", fontSize: 12, fontWeight: 400 }}>/{FREE_LIMIT}</span>
               </strong>
-              <button className="sx-btn sx-btn--sm">Upgrade</button>
+              <a href="/pricing" className="sx-btn sx-btn--sm">Upgrade</a>
             </div>
           </div>
         </div>
@@ -487,6 +496,28 @@ const Screen_Consultor = () => {
           </div>
         </div>
       </div>
+
+      {showPaywall && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, backdropFilter: "blur(4px)" }}>
+          <div className="sx-card" style={{ padding: 40, maxWidth: 440, textAlign: "center", border: "1px solid var(--acc)" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 24, background: "var(--acc-soft)", color: "var(--acc)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+              <Icon name="sparkle" size={24} />
+            </div>
+            <h2 style={{ fontSize: 24, fontWeight: 600, marginBottom: 12 }}>Limite de consultas atingido</h2>
+            <p style={{ color: "var(--text-dim)", lineHeight: 1.5, marginBottom: 24 }}>
+              Você utilizou suas {FREE_LIMIT} interações gratuitas com a Consultora IA. Faça o upgrade para o Stackly Pro e tenha consultas ilimitadas para construir a stack perfeita.
+            </p>
+            <div style={{ display: "flex", gap: 12 }}>
+              <button className="sx-btn sx-btn--ghost" style={{ flex: 1, justifyContent: "center" }} onClick={() => setShowPaywall(false)}>
+                Agora não
+              </button>
+              <a href="/pricing" className="sx-btn sx-btn--primary" style={{ flex: 1, justifyContent: "center" }}>
+                Ver Planos
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
