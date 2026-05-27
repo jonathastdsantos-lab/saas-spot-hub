@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Stackly — Marketplace SaaS · IA · Agentes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #1A1714; color: #fff; font-family: 'Space Grotesk', system-ui, sans-serif; }
+  #root { width: 100vw; height: 100vh; }
+  /* root canvas sets a default theme for the chrome (so the canvas grid is warm) */
+  body[data-theme="dark"] { background: #1A1714; }
+  body[data-theme="light"] { background: #f0eee9; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body data-theme="dark">
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens/01-home.jsx"></script>
+<script type="text/babel" src="screens/02-consultor.jsx"></script>
+<script type="text/babel" src="screens/03-profile.jsx"></script>
+<script type="text/babel" src="screens/04-compare.jsx"></script>
+<script type="text/babel" src="screens/05-stack.jsx"></script>
+<script type="text/babel" src="screens/06-agents.jsx"></script>
+<script type="text/babel" src="screens/07-dashboard.jsx"></script>
+<script type="text/babel" src="screens/08-category.jsx"></script>
+<script type="text/babel" src="screens/09-onboarding.jsx"></script>
+<script type="text/babel" src="screens/10-integrations.jsx"></script>
+<script type="text/babel" src="screens/11-community.jsx"></script>
+<script type="text/babel" src="screens/12-mobile.jsx"></script>
+<script type="text/babel" src="screens/14-pricing.jsx"></script>
+<script type="text/babel" src="screens/15-seo.jsx"></script>
+<script type="text/babel" src="screens/16-migrate.jsx"></script>
+<script type="text/babel" src="screens/17-affiliates.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "dark",
+  "accent": "#C8FF3E",
+  "density": "regular"
+}/*EDITMODE-END*/;
+
+const ACCENT_OPTIONS = [
+  '#C8FF3E', // lime electric (default)
+  '#9D7CFE', // violet
+  '#FF7A6A', // coral
+  '#5EEAFE', // cyan
+];
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply theme/accent globally
+  React.useEffect(() => {
+    document.body.setAttribute('data-theme', t.theme);
+    document.body.setAttribute('data-density', t.density);
+    // Update accent on the body so it cascades to every .sx-screen
+    document.body.style.setProperty('--acc', t.accent);
+    // accent ink: dark by default unless accent is dark
+    const isDarkAccent = ['#9D7CFE', '#FF7A6A'].includes(t.accent);
+    document.body.style.setProperty('--acc-ink', isDarkAccent ? '#fff' : '#0A0A0B');
+    // soft + glow versions
+    const hex = t.accent.replace('#', '');
+    const r = parseInt(hex.slice(0,2), 16), g = parseInt(hex.slice(2,4), 16), b = parseInt(hex.slice(4,6), 16);
+    document.body.style.setProperty('--acc-soft', `rgba(${r}, ${g}, ${b}, 0.16)`);
+    document.body.style.setProperty('--acc-glow', `rgba(${r}, ${g}, ${b}, 0.45)`);
+  }, [t.theme, t.accent, t.density]);
+
+  // Screens
+  const screens = [
+    { id: 'home', label: '01 · Home', comp: <Screen_Home /> },
+    { id: 'consultor', label: '02 · Consultor IA', comp: <Screen_Consultor /> },
+    { id: 'profile', label: '03 · Perfil do SaaS', comp: <Screen_Profile /> },
+    { id: 'compare', label: '04 · Comparador', comp: <Screen_Compare /> },
+    { id: 'stack', label: '05 · Gerador de Stack', comp: <Screen_Stack /> },
+    { id: 'agents', label: '06 · Marketplace de Agentes IA', comp: <Screen_Agents /> },
+    { id: 'dashboard', label: '07 · Dashboard do Anunciante', comp: <Screen_Dashboard /> },
+    { id: 'category', label: '08 · Categoria / Ranking', comp: <Screen_Category /> },
+    { id: 'onboarding', label: '09 · Onboarding do anunciante', comp: <Screen_Onboarding /> },
+    { id: 'integrations', label: '10 · Mapa de Integrações', comp: <Screen_Integrations /> },
+    { id: 'community', label: '11 · Comunidade', comp: <Screen_Community /> },
+    { id: 'pricing', label: '14 · Pricing dos anunciantes', comp: <Screen_Pricing /> },
+    { id: 'seo', label: '15 · SEO programático · Alternativas', comp: <Screen_SEO /> },
+    { id: 'migration', label: '16 · Migrador de plataforma', comp: <Screen_Migrate /> },
+    { id: 'affiliates', label: '17 · Programa de afiliados', comp: <Screen_Affiliates /> },
+  ];
+
+  const W = 1440, H = 900;
+
+  return (
+    <React.Fragment>
+      <DesignCanvas>
+        <DCSection
+          id="public"
+          title="Stackly · Marketplace"
+          subtitle="Telas públicas — descoberta, IA, perfil, comparador, rankings"
+        >
+          {[screens[0], screens[1], screens[2], screens[3]].map(s => (
+            <DCArtboard key={s.id} id={s.id} label={s.label} width={W} height={H} data-screen-label={s.label}>
+              {s.comp}
+            </DCArtboard>
+          ))}
+        </DCSection>
+
+        <DCSection
+          id="tools"
+          title="Ferramentas inteligentes"
+          subtitle="Gerador de stack, mapa de integrações, agentes IA, rankings"
+        >
+          {[screens[4], screens[9], screens[5], screens[7]].map(s => (
+            <DCArtboard key={s.id} id={s.id} label={s.label} width={W} height={H} data-screen-label={s.label}>
+              {s.comp}
+            </DCArtboard>
+          ))}
+        </DCSection>
+
+        <DCSection
+          id="advertiser"
+          title="Painel do anunciante"
+          subtitle="Onboarding, gestão, pricing e crescimento — para donos de SaaS"
+        >
+          <DCArtboard id="onboarding" label={screens[8].label} width={W} height={H} data-screen-label={screens[8].label}>
+            {screens[8].comp}
+          </DCArtboard>
+          <DCArtboard id="pricing" label="14 · Pricing dos anunciantes" width={W} height={1500} data-screen-label="14 · Pricing dos anunciantes">
+            <Screen_Pricing />
+          </DCArtboard>
+          <DCArtboard id="dashboard" label={screens[6].label} width={W} height={H} data-screen-label={screens[6].label}>
+            {screens[6].comp}
+          </DCArtboard>
+          <DCArtboard id="affiliates" label="17 · Programa de afiliados" width={W} height={1400} data-screen-label="17 · Programa de afiliados">
+            <Screen_Affiliates />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="growth"
+          title="Crescimento & SEO"
+          subtitle="Páginas programáticas e migração de plataforma"
+        >
+          <DCArtboard id="seo" label="15 · SEO programático · Alternativas" width={W} height={1700} data-screen-label="15 · SEO programático">
+            <Screen_SEO />
+          </DCArtboard>
+          <DCArtboard id="migration" label="16 · Migrador de plataforma" width={W} height={H} data-screen-label="16 · Migrador de plataforma">
+            <Screen_Migrate />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="community"
+          title="Comunidade & inteligência coletiva"
+          subtitle="Onde reputação, reviews e stacks circulam"
+        >
+          <DCArtboard id="community" label={screens[10].label} width={W} height={H} data-screen-label={screens[10].label}>
+            {screens[10].comp}
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="mobile"
+          title="Mobile · iPhone"
+          subtitle="Home e Consultor IA em dispositivo"
+        >
+          <DCArtboard id="m-home" label="12 · Mobile Home" width={460} height={930} data-screen-label="12 · Mobile Home">
+            <div style={{ width: '100%', height: '100%', background: '#1A1714', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Screen_Mobile_Home />
+            </div>
+          </DCArtboard>
+          <DCArtboard id="m-chat" label="13 · Mobile Consultor" width={460} height={930} data-screen-label="13 · Mobile Consultor">
+            <div style={{ width: '100%', height: '100%', background: '#1A1714', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Screen_Mobile_Chat />
+            </div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel>
+        <TweakSection label="Aparência" />
+        <TweakRadio
+          label="Tema"
+          value={t.theme}
+          options={[
+            { value: 'dark',  label: 'Escuro' },
+            { value: 'light', label: 'Claro' },
+          ]}
+          onChange={(v) => setTweak('theme', v)}
+        />
+        <TweakColor
+          label="Acento"
+          value={t.accent}
+          options={ACCENT_OPTIONS}
+          onChange={(v) => setTweak('accent', v)}
+        />
+        <TweakRadio
+          label="Densidade"
+          value={t.density}
+          options={[
+            { value: 'regular', label: 'Confortável' },
+            { value: 'compact', label: 'Compacto' },
+          ]}
+          onChange={(v) => setTweak('density', v)}
+        />
+      </TweaksPanel>
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
