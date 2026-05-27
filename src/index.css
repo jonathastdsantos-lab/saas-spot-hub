@@ -2,12 +2,239 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Stackly — Design System
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
 :root {
-  --background: #0A0A0C;
-  --foreground: #F5F5F7;
+  /* — Type — */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  /* — Brand accent: electric lime — */
+  --acc: #C8FF3E;
+  --acc-soft: rgba(200, 255, 62, 0.14);
+  --acc-glow: rgba(200, 255, 62, 0.45);
+  --acc-ink: #0A0A0B; /* foreground on accent */
+
+  /* — Secondary: violet for AI surfaces — */
+  --ai: #9D7CFE;
+  --ai-soft: rgba(157, 124, 254, 0.16);
+  --ai-glow: rgba(157, 124, 254, 0.55);
+
+  /* — Status — */
+  --pos: #6BE49F;
+  --neg: #FF7A6A;
+  --warn: #FFD166;
+
+  /* — Dark surfaces (default) — */
+  --bg: #0A0A0C;
+  --bg-2: #0F0F13;
+  --surface: #15151A;
+  --surface-2: #1B1B21;
+  --surface-3: #232329;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #F5F5F7;
+  --text-dim: #A6A8AE;
+  --text-muted: #6A6D75;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 1px 30px rgba(0, 0, 0, 0.35);
+
+  /* — Density — */
+  --pad-1: 6px;
+  --pad-2: 10px;
+  --pad-3: 14px;
+  --pad-4: 20px;
+  --pad-5: 28px;
+  --pad-6: 40px;
+  --radius-1: 6px;
+  --radius-2: 10px;
+  --radius-3: 14px;
+  --radius-4: 20px;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+/* Light theme */
+[data-theme="light"] {
+  --bg: #F5F4EE;
+  --bg-2: #ECEAE2;
+  --surface: #FFFFFF;
+  --surface-2: #F7F5EF;
+  --surface-3: #ECEAE2;
+  --border: rgba(10, 10, 12, 0.09);
+  --border-strong: rgba(10, 10, 12, 0.17);
+  --text: #16161A;
+  --text-dim: #545862;
+  --text-muted: #898C95;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 4px 14px rgba(10, 10, 12, 0.05);
 }
+
+/* Density variants */
+[data-density="compact"] {
+  --pad-1: 4px; --pad-2: 7px; --pad-3: 10px; --pad-4: 14px; --pad-5: 20px; --pad-6: 28px;
+}
+
+/* Reset within a screen */
+.sx-screen, .sx-screen *, .sx-screen *::before, .sx-screen *::after {
+  box-sizing: border-box;
+}
+.sx-screen {
+  font-family: var(--font-display);
+  color: var(--text);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.sx-screen *::-webkit-scrollbar { width: 0; height: 0; }
+
+/* ---------- Atoms ---------- */
+
+.sx-mono { font-family: var(--font-mono); font-feature-settings: 'ss01', 'zero'; }
+.sx-serif { font-family: var(--font-serif); }
+
+.sx-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.01em;
+  background: var(--surface-2); color: var(--text-dim);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+}
+.sx-pill .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.sx-pill--ai { color: var(--ai); background: var(--ai-soft); border-color: transparent; }
+.sx-pill--acc { color: var(--acc); background: var(--acc-soft); border-color: transparent; }
+.sx-pill--pos { color: var(--pos); background: rgba(107, 228, 159, 0.12); border-color: transparent; }
+
+.sx-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 10px;
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border); cursor: pointer;
+  letter-spacing: -0.005em; white-space: nowrap;
+  transition: all .15s ease;
+}
+.sx-btn:hover { background: var(--surface-3); border-color: var(--border-strong); }
+.sx-btn--ghost { background: transparent; }
+.sx-btn--primary {
+  background: var(--acc); color: var(--acc-ink); border-color: transparent;
+  font-weight: 600;
+}
+.sx-btn--primary:hover { background: var(--acc); filter: brightness(1.08); box-shadow: 0 0 24px var(--acc-glow); }
+.sx-btn--sm { padding: 6px 11px; font-size: 12px; border-radius: 8px; }
+.sx-btn--lg { padding: 14px 22px; font-size: 14px; border-radius: 12px; }
+.sx-btn--icon { padding: 8px; }
+
+.sx-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-card);
+}
+
+.sx-divider { height: 1px; background: var(--border); margin: 0; border: 0; }
+
+/* Logo glyph: 3 horizontal blocks stacked, slight offset = "stack" */
+.sx-logo {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 600; letter-spacing: -0.02em; font-size: 16px;
+}
+.sx-logo svg { display: block; }
+
+/* ---------- Search bar ---------- */
+.sx-search {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: border-color .15s;
+}
+.sx-search:focus-within { border-color: var(--border-strong); }
+.sx-search input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--text); font-family: var(--font-display); font-size: 14px;
+}
+.sx-search input::placeholder { color: var(--text-muted); }
+
+/* ---------- Star rating ---------- */
+.sx-stars { display: inline-flex; gap: 2px; color: var(--acc); }
+.sx-stars svg { width: 12px; height: 12px; }
+
+/* ---------- Nav (top) ---------- */
+.sx-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.sx-nav-links { display: flex; gap: 6px; align-items: center; }
+.sx-nav-links a {
+  font-size: 13px; color: var(--text-dim); text-decoration: none;
+  padding: 6px 10px; border-radius: 6px;
+}
+.sx-nav-links a.active { color: var(--text); background: var(--surface-2); }
+.sx-nav-links a:hover { color: var(--text); }
+
+/* ---------- Generic helpers ---------- */
+.sx-grid-bg {
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--ai-soft) 0%, transparent 55%),
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
+/* tiny chip used everywhere */
+.sx-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 8px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: 11.5px; color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* avatar */
+.sx-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface-3); display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* placeholder image (striped) */
+.sx-img-ph {
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 8px, transparent 8px 16px),
+    var(--surface-2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-family: var(--font-mono); font-size: 11px;
+  border: 1px solid var(--border); border-radius: var(--radius-2);
+}
+
+/* logo tile (square gradient placeholder) */
+.sx-logo-tile {
+  width: 40px; height: 40px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 600; font-size: 15px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* keyboard key */
+.sx-kbd {
+  display: inline-flex; padding: 1px 5px; border-radius: 4px;
+  background: var(--surface-3); color: var(--text-dim);
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+  border: 1px solid var(--border); border-bottom-width: 2px;
+}
+
+/* Hide scrollbars cleanly */
+.sx-screen ::-webkit-scrollbar { display: none; }
