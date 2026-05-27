@@ -1,9 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { SAAS, CATEGORIES } from "../../lib/mockData";
 import { TopNav, Icon, LogoTile, Stars, Spark, Logo, IOSDevice, ScoreGauge } from "../SharedUI";
+import { supabase } from "../../lib/supabase";
 
 // Tela 2: Consultor IA — chat conversacional com recomendações
 const Screen_Consultor = () => {
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: {
+        message: "Olá! Sou a Stackly, sua consultora de tecnologia. Me conte um pouco sobre o seu negócio (segmento, tamanho da equipe e orçamento) e eu montarei a stack ideal para você.",
+        recommendations: [],
+        totalMonthlyCost: ""
+      }
+    }
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Contexto mockado para o MVP
+  const [context, setContext] = useState({
+    segment: "Clínica de estética",
+    location: "São Paulo, SP",
+    teamSize: "4 pessoas",
+    revenue: "R$ 80k/mês esperado",
+    budget: "R$ 500/mês",
+    stage: "Abertura"
+  });
+
+  const sendMessage = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = { role: "user", content: input };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      // In a real scenario, map internal messages to API format:
+      const apiMessages = [...messages, userMessage].map(m => ({
+        role: m.role,
+        content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content)
+      }));
+
+      const { data, error } = await supabase.functions.invoke('ai-consultant', {
+        body: { messages: apiMessages, context }
+      });
+
+      if (error) throw error;
+
+      if (data) {
+        setMessages((prev) => [...prev, { role: "assistant", content: data }]);
+      }
+    } catch (err) {
+      console.error("Erro ao chamar consultor IA:", err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: { message: "Desculpe, encontrei um erro ao processar sua solicitação.", recommendations: [] } }
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="sx-screen">
       <TopNav active="consultor" />
@@ -128,9 +187,9 @@ const Screen_Consultor = () => {
             }}
           >
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600 }}>Stack para clínica de estética</div>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>Nova Consulta</div>
               <div style={{ fontSize: 11, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-                clínica · 4 funcionárias · faturamento R$ 80k/mês · São Paulo
+                {context.segment} · {context.teamSize} · {context.revenue} · {context.location}
               </div>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
@@ -142,192 +201,180 @@ const Screen_Consultor = () => {
           <div
             style={{
               flex: 1,
-              overflow: "hidden",
+              overflowY: "auto",
               padding: "24px 32px",
               display: "flex",
               flexDirection: "column",
               gap: 22,
             }}
           >
-            {/* user msg */}
-            <div style={{ alignSelf: "flex-end", maxWidth: "78%" }}>
-              <div
-                style={{
-                  background: "var(--surface-2)",
-                  padding: "12px 16px",
-                  borderRadius: "14px 14px 4px 14px",
-                  fontSize: 13.5,
-                  lineHeight: 1.55,
-                  border: "1px solid var(--border)",
-                }}
-              >
-                Preciso de uma stack completa para abrir uma clínica de estética em SP. Tenho 4 funcionárias, espero
-                faturar uns 80k/mês. Quero algo com WhatsApp, agendamento online e prontuário. Orçamento até R$ 500/mês.
-              </div>
-              <div
-                style={{
-                  fontSize: 10,
-                  color: "var(--text-muted)",
-                  fontFamily: "var(--font-mono)",
-                  marginTop: 4,
-                  textAlign: "right",
-                }}
-              >
-                09:42
-              </div>
-            </div>
-
-            {/* ai msg */}
-            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: 8,
-                  background: "var(--ai)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <Icon name="sparkle" size={14} stroke="#fff" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13.5, lineHeight: 1.6, color: "var(--text)" }}>
-                  Perfeito. Para uma clínica de estética desse porte em SP, recomendo uma stack de 4 ferramentas que
-                  cobrem tudo dentro do seu orçamento — sobram <span style={{ color: "var(--acc)" }}>R$ 124/mês</span>{" "}
-                  para reserva. Aqui vão:
-                </div>
-
-                {/* Recommendations */}
-                <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {[
-                    {
-                      p: SAAS[10],
-                      reason:
-                        "Prontuário eletrônico + agendamento + teleconsulta. Único do mercado com integração ANVISA.",
-                      match: 96,
-                      price: "R$ 149/mês",
-                    },
-                    {
-                      p: SAAS[3],
-                      reason: "Agenda online com confirmação automática WhatsApp e ficha de cliente visual.",
-                      match: 92,
-                      price: "R$ 79/mês",
-                    },
-                    {
-                      p: SAAS[14],
-                      reason:
-                        "Bot WhatsApp pré-treinado para estética. Confirma horários e qualifica leads do Instagram.",
-                      match: 90,
-                      price: "R$ 69/mês",
-                    },
-                    {
-                      p: SAAS[5],
-                      reason: "Cobrança recorrente PIX + cartão. Splits, antifraude e link de pagamento por WhatsApp.",
-                      match: 88,
-                      price: "1.99% + R$ 0.49",
-                    },
-                  ].map(({ p, reason, match, price }, i) => (
+            {messages.map((msg, idx) => (
+              <div key={idx} style={{ alignSelf: msg.role === "user" ? "flex-end" : "flex-start", maxWidth: msg.role === "user" ? "78%" : "100%" }}>
+                {msg.role === "user" ? (
+                  <div
+                    style={{
+                      background: "var(--surface-2)",
+                      padding: "12px 16px",
+                      borderRadius: "14px 14px 4px 14px",
+                      fontSize: 13.5,
+                      lineHeight: 1.55,
+                      border: "1px solid var(--border)",
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                     <div
-                      key={p.id}
-                      className="sx-card"
                       style={{
-                        padding: 14,
-                        display: "grid",
-                        gridTemplateColumns: "40px 1fr auto",
-                        gap: 14,
+                        width: 28,
+                        height: 28,
+                        borderRadius: 8,
+                        background: "var(--ai)",
+                        display: "flex",
                         alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
                       }}
                     >
-                      <LogoTile p={p} />
-                      <div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <span style={{ fontSize: 13.5, fontWeight: 600 }}>{p.name}</span>
-                          <span className="sx-pill sx-pill--acc">
-                            <Icon name="sparkle" size={9} stroke="var(--acc)" /> {match}% match
-                          </span>
-                          <span className="sx-pill" style={{ fontSize: 10 }}>
-                            {p.cat}
-                          </span>
-                        </div>
-                        <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 3, lineHeight: 1.45 }}>
-                          {reason}
-                        </div>
-                      </div>
-                      <div style={{ textAlign: "right" }}>
-                        <div className="sx-mono" style={{ fontSize: 12, fontWeight: 600 }}>
-                          {price}
-                        </div>
-                        <button className="sx-btn sx-btn--sm" style={{ marginTop: 6 }}>
-                          Adicionar
-                        </button>
-                      </div>
+                      <Icon name="sparkle" size={14} stroke="#fff" />
                     </div>
-                  ))}
-                </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 13.5, lineHeight: 1.6, color: "var(--text)" }}>
+                        {msg.content.message}
+                      </div>
 
-                {/* Total */}
-                <div
-                  style={{
-                    marginTop: 12,
-                    padding: 14,
-                    borderRadius: 12,
-                    background: "var(--surface)",
-                    border: "1px dashed var(--border-strong)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 11,
-                        color: "var(--text-muted)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
-                        fontFamily: "var(--font-mono)",
-                      }}
-                    >
-                      Custo mensal estimado
-                    </div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 4 }}>
-                      <span className="sx-mono" style={{ fontSize: 26, fontWeight: 600 }}>
-                        R$ 376
-                      </span>
-                      <span style={{ fontSize: 11, color: "var(--text-muted)" }}>+ 1.99% sobre vendas</span>
-                      <span className="sx-pill sx-pill--pos">↓ 24% vs. média do nicho</span>
+                      {msg.content.recommendations && msg.content.recommendations.length > 0 && (
+                        <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+                          {msg.content.recommendations.map((rec, i) => {
+                            // Encontrar o mock correspondente (se existir) para pegar o ícone
+                            const mockP = SAAS.find(s => s.id === rec.saasId) || { name: rec.name, cat: 'SaaS', color: 'var(--acc)' };
+                            return (
+                              <div
+                                key={i}
+                                className="sx-card"
+                                style={{
+                                  padding: 14,
+                                  display: "grid",
+                                  gridTemplateColumns: "40px 1fr auto",
+                                  gap: 14,
+                                  alignItems: "center",
+                                }}
+                              >
+                                <LogoTile p={mockP} />
+                                <div>
+                                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                    <span style={{ fontSize: 13.5, fontWeight: 600 }}>{rec.name}</span>
+                                    <span className="sx-pill sx-pill--acc">
+                                      <Icon name="sparkle" size={9} stroke="var(--acc)" /> {rec.matchPercentage}% match
+                                    </span>
+                                  </div>
+                                  <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 3, lineHeight: 1.45 }}>
+                                    {rec.reason}
+                                  </div>
+                                </div>
+                                <div style={{ textAlign: "right" }}>
+                                  <button className="sx-btn sx-btn--sm" style={{ marginTop: 6 }}>
+                                    Adicionar
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {msg.content.totalMonthlyCost && (
+                        <div
+                          style={{
+                            marginTop: 12,
+                            padding: 14,
+                            borderRadius: 12,
+                            background: "var(--surface)",
+                            border: "1px dashed var(--border-strong)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <div>
+                            <div
+                              style={{
+                                fontSize: 11,
+                                color: "var(--text-muted)",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.06em",
+                                fontFamily: "var(--font-mono)",
+                              }}
+                            >
+                              Custo mensal estimado
+                            </div>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 4 }}>
+                              <span className="sx-mono" style={{ fontSize: 26, fontWeight: 600 }}>
+                                {msg.content.totalMonthlyCost}
+                              </span>
+                            </div>
+                          </div>
+                          <button className="sx-btn sx-btn--primary">
+                            Contratar stack completa
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <button className="sx-btn sx-btn--primary">
-                    Contratar stack completa
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
-                  </button>
+                )}
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 8,
+                    background: "var(--ai)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon name="sparkle" size={14} stroke="#fff" />
                 </div>
-
-                <div style={{ marginTop: 14, fontSize: 13.5, lineHeight: 1.6 }}>
-                  Quer que eu adicione um <strong>módulo de marketing</strong> para Instagram, ou prefere começar com
-                  isso e expandir depois?
+                <div style={{ fontSize: 13.5, color: "var(--text-muted)", display: "flex", alignItems: "center", height: 28 }}>
+                  Analisando contexto...
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Composer */}
           <div style={{ padding: "16px 32px 22px", borderTop: "1px solid var(--border)" }}>
-            <div className="sx-search" style={{ padding: "6px 6px 6px 18px" }}>
+            <div className="sx-search" style={{ padding: "6px 6px 6px 18px", display: 'flex' }}>
               <Icon name="sparkle" size={14} stroke="var(--ai)" />
-              <input placeholder="Pergunte algo sobre a stack, peça comparações…" />
+              <input 
+                placeholder="Pergunte algo sobre a stack, peça comparações…" 
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                disabled={isLoading}
+                style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none' }}
+              />
               <button className="sx-btn sx-btn--sm sx-btn--ghost" title="Anexar">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 11.5l-8.5 8.5a5 5 0 01-7-7L14 4.5a3.5 3.5 0 015 5L10 18.5a2 2 0 01-3-3L15 7" />
                 </svg>
               </button>
-              <button className="sx-btn sx-btn--primary sx-btn--sm" style={{ background: "var(--ai)", color: "#fff" }}>
+              <button 
+                className="sx-btn sx-btn--primary sx-btn--sm" 
+                style={{ background: "var(--ai)", color: "#fff" }}
+                onClick={sendMessage}
+                disabled={isLoading}
+              >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
@@ -340,7 +387,12 @@ const Screen_Consultor = () => {
                 "Reduzir custos em 20%",
                 "Mostrar integrações entre eles",
               ].map((s) => (
-                <button key={s} className="sx-chip" style={{ cursor: "pointer", fontFamily: "var(--font-display)" }}>
+                <button 
+                  key={s} 
+                  className="sx-chip" 
+                  style={{ cursor: "pointer", fontFamily: "var(--font-display)" }}
+                  onClick={() => { setInput(s); }}
+                >
                   {s}
                 </button>
               ))}
@@ -366,12 +418,12 @@ const Screen_Consultor = () => {
           </div>
           <div className="sx-card" style={{ padding: 14 }}>
             {[
-              ["Segmento", "Clínica de estética"],
-              ["Localização", "São Paulo, SP"],
-              ["Time", "4 pessoas"],
-              ["Faturamento", "R$ 80k/mês esperado"],
-              ["Orçamento SaaS", "R$ 500/mês"],
-              ["Estágio", "Abertura"],
+              ["Segmento", context.segment],
+              ["Localização", context.location],
+              ["Time", context.teamSize],
+              ["Faturamento", context.revenue],
+              ["Orçamento SaaS", context.budget],
+              ["Estágio", context.stage],
             ].map(([k, v]) => (
               <div
                 key={k}
@@ -406,7 +458,7 @@ const Screen_Consultor = () => {
               margin: "20px 0 10px",
             }}
           >
-            Sua stack atual
+            Sua stack sugerida (Fixa temporária)
           </div>
           <div className="sx-card" style={{ padding: 12 }}>
             {[SAAS[10], SAAS[3], SAAS[14], SAAS[5]].map((p, i) => (
@@ -432,19 +484,6 @@ const Screen_Consultor = () => {
                 </button>
               </div>
             ))}
-          </div>
-
-          <div
-            className="sx-card"
-            style={{ padding: 14, marginTop: 14, background: "var(--ai-soft)", borderColor: "transparent" }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: "var(--ai)", marginBottom: 4 }}>
-              Próximo passo sugerido
-            </div>
-            <div style={{ fontSize: 11.5, color: "var(--text-dim)", lineHeight: 1.5 }}>
-              Ver o <strong style={{ color: "var(--text)" }}>mapa de integrações</strong> entre as 4 ferramentas —
-              encontrei 11 automações prontas no n8n.
-            </div>
           </div>
         </div>
       </div>
