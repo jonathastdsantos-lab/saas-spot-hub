@@ -28,5 +28,5 @@ function Index() {
     }
   });
 
-  return <Screen_Home products={products || []} categories={categories || []} />
+  return <Screen_Home products={(products as any) || []} categories={(categories as any) || []} />
 }
