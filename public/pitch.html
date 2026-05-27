@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Stackly — Pitch Deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  :root {
+    --acc: #C8FF3E;
+    --acc-ink: #0A0A0B;
+    --acc-soft: rgba(200,255,62,0.16);
+    --acc-glow: rgba(200,255,62,0.45);
+    --ai: #9D7CFE;
+    --ai-soft: rgba(157,124,254,0.18);
+    --bg: #0A0A0C;
+    --surface: #15151A;
+    --surface-2: #1B1B21;
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.18);
+    --text: #F5F5F7;
+    --text-dim: #A6A8AE;
+    --text-muted: #6A6D75;
+  }
+  html, body { margin: 0; padding: 0; height: 100%; background: #000; }
+  body { font-family: 'Space Grotesk', system-ui, sans-serif; color: var(--text); }
+
+  /* ---- Slide base ---- */
+  deck-stage > section {
+    width: 1920px; height: 1080px;
+    background: var(--bg);
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  deck-stage > section *, deck-stage > section *::before, deck-stage > section *::after { box-sizing: border-box; }
+
+  .slide-pad { padding: 88px 120px; }
+  .slide-pad-lg { padding: 100px 140px; }
+
+  /* Persistent slide chrome */
+  .chrome-top {
+    position: absolute; top: 40px; left: 120px; right: 120px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace; font-size: 24px;
+    color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase;
+    z-index: 5;
+  }
+  .chrome-logo { display: inline-flex; align-items: center; gap: 12px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; text-transform: none; }
+  .chrome-logo svg { display: block; }
+  .chrome-page { letter-spacing: 0.12em; }
+
+  /* Typography */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--acc); margin-bottom: 28px;
+  }
+  h1.hero {
+    font-size: 144px; line-height: 0.95; letter-spacing: -0.045em;
+    font-weight: 500; margin: 0; color: var(--text);
+  }
+  h1.display {
+    font-size: 116px; line-height: 1.00; letter-spacing: -0.04em;
+    font-weight: 500; margin: 0;
+  }
+  h1.large {
+    font-size: 88px; line-height: 1.02; letter-spacing: -0.035em;
+    font-weight: 500; margin: 0;
+  }
+  h2.section {
+    font-size: 56px; line-height: 1.05; letter-spacing: -0.025em;
+    font-weight: 500; margin: 0;
+  }
+  .ital { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; }
+  .accent { color: var(--acc); }
+  .violet { color: var(--ai); }
+  .dim { color: var(--text-dim); }
+  .muted { color: var(--text-muted); }
+
+  .lede {
+    font-size: 30px; line-height: 1.45; color: var(--text-dim);
+    max-width: 1100px; font-weight: 400;
+  }
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 24px;
+    color: var(--text-dim); letter-spacing: 0.04em;
+  }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .pill--ai { color: var(--ai); background: var(--ai-soft); border-color: transparent; }
+  .pill--acc { color: var(--acc); background: var(--acc-soft); border-color: transparent; }
+
+  /* Stat grid */
+  .stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; font-size: 96px; line-height: 1;
+    letter-spacing: -0.03em; color: var(--text);
+  }
+  .stat-label { font-size: 24px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.04em; }
+
+  /* Background flourishes */
+  .glow-violet {
+    position: absolute; pointer-events: none;
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, var(--ai-soft) 0%, transparent 60%);
+    filter: blur(20px);
+  }
+  .glow-acc {
+    position: absolute; pointer-events: none;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, var(--acc-soft) 0%, transparent 60%);
+    filter: blur(20px);
+  }
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 80%);
+  }
+
+  /* Logo tile (for product icons) */
+  .ltile {
+    border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-weight: 600;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  /* Footer line */
+  .foot-line {
+    position: absolute; bottom: 40px; left: 120px; right: 120px;
+    height: 1px; background: var(--border);
+  }
+
+  /* Big bg word (typographic decoration) */
+  .bg-word {
+    position: absolute;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 360px;
+    line-height: 1;
+    color: rgba(255,255,255,0.025);
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.04em;
+    z-index: 0;
+  }
+</style>
+
+<script src="deck-stage.js"></script>
+</head>
+<body>
+
+<deck-stage>
+
+<!-- ============================================================
+     01 · TITLE
+     ============================================================ -->
+<section data-screen-label="01 Title">
+  <div class="grid-bg"></div>
+  <div class="glow-violet" style="top: -300px; right: -300px;"></div>
+  <div class="glow-acc"    style="bottom: -300px; left: -200px;"></div>
+
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)" />
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7" />
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4" />
+      </svg>
+      Stackly
+    </span>
+    <span>Confidencial · Série Seed · Nov 2026</span>
+  </div>
+
+  <div class="slide-pad" style="display: flex; flex-direction: column; justify-content: center; flex: 1; position: relative; z-index: 2;">
+    <div class="pill pill--ai" style="margin-bottom: 40px;"><span class="dot"></span> A próxima infraestrutura do SaaS</div>
+    <h1 class="hero">
+      A infraestrutura<br>
+      <span class="ital accent">inteligente</span> do<br>
+      mercado SaaS.
+    </h1>
+    <div style="display: flex; align-items: center; gap: 36px; margin-top: 80px;">
+      <div class="pill">Marketplace</div>
+      <div class="pill">Consultor IA</div>
+      <div class="pill">Agentes</div>
+      <div class="pill">Comunidade</div>
+    </div>
+  </div>
+
+  <div class="foot-line"></div>
+  <div style="position: absolute; bottom: 56px; left: 120px; font-size: 24px; color: var(--text-muted);">
+    stackly.com · São Paulo
+  </div>
+  <div style="position: absolute; bottom: 56px; right: 120px; font-size: 24px; color: var(--text-muted);" class="mono">
+    Pitch v1.0
+  </div>
+</section>
+
+
+<!-- ============================================================
+     02 · PROBLEM
+     ============================================================ -->
+<section data-screen-label="02 Problem">
+  <div class="bg-word" style="display: none;">caos</div>
+
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">01 · O problema</span>
+  </div>
+
+  <div class="slide-pad" style="display: flex; flex-direction: column; justify-content: center; flex: 1; position: relative; z-index: 2;">
+    <div class="eyebrow">O problema</div>
+    <h1 class="display" style="max-width: 1500px;">
+      Hoje, escolher software <br>é uma <span class="ital accent">peregrinação</span>.
+    </h1>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 100px;">
+      <div class="card">
+        <div class="mono accent" style="font-size: 56px; font-weight: 600; letter-spacing: -0.02em;">38k+</div>
+        <div style="font-size: 24px; margin-top: 18px; line-height: 1.45;">ferramentas SaaS &amp; IA disponíveis<br><span class="muted">e crescendo 30% ao ano</span></div>
+      </div>
+      <div class="card">
+        <div class="mono accent" style="font-size: 56px; font-weight: 600; letter-spacing: -0.02em;">7 dias</div>
+        <div style="font-size: 24px; margin-top: 18px; line-height: 1.45;">o tempo médio para uma PME escolher uma ferramenta<br><span class="muted">e 40% se arrependem em 6 meses</span></div>
+      </div>
+      <div class="card">
+        <div class="mono accent" style="font-size: 56px; font-weight: 600; letter-spacing: -0.02em;">R$ 4,3 mil</div>
+        <div style="font-size: 24px; margin-top: 18px; line-height: 1.45;">desperdiçados por empresa/ano em SaaS<br><span class="muted">subutilizado ou duplicado</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 80px; font-size: 26px; line-height: 1.5; color: var(--text-dim); max-width: 1300px;">
+      Product Hunt mostra. G2 avalia. Capterra lista. <span class="accent">Mas ninguém</span><br>
+      <span class="accent">monta sua stack inteira, no seu contexto, em 1 minuto.</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     03 · MARKET
+     ============================================================ -->
+<section data-screen-label="03 Market">
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">02 · Mercado</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="eyebrow">Tamanho do mercado</div>
+    <h1 class="display" style="margin-bottom: 60px;">
+      O SaaS é um <span class="ital accent">oceano</span>.<br>
+      Vamos ser a costa.
+    </h1>
+
+    <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 100px; align-items: center; margin-top: 40px;">
+      <!-- Layered horizontal bars: TAM / SAM / SOM -->
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <!-- TAM bar -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+            <span class="label" style="font-size: 24px;">TAM · global · SaaS + IA até 2030</span>
+            <span class="mono" style="font-size: 44px; font-weight: 600; letter-spacing: -0.02em;">US$ 720B</span>
+          </div>
+          <div style="height: 68px; width: 100%; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 14px;"></div>
+        </div>
+        <!-- SAM bar -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+            <span class="label" style="font-size: 24px; color: var(--ai);">SAM · LATAM · marketplace + descoberta</span>
+            <span class="mono" style="font-size: 44px; font-weight: 600; letter-spacing: -0.02em; color: var(--ai);">US$ 38B</span>
+          </div>
+          <div style="height: 68px; width: 52%; background: var(--ai-soft); border: 1px solid var(--ai); border-radius: 14px;"></div>
+        </div>
+        <!-- SOM bar -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+            <span class="label accent" style="font-size: 24px;">SOM · BR em 3 anos</span>
+            <span class="mono accent" style="font-size: 44px; font-weight: 600; letter-spacing: -0.02em;">US$ 240M</span>
+          </div>
+          <div style="height: 68px; width: 18%; background: var(--acc); border-radius: 14px;"></div>
+        </div>
+      </div>
+
+      <!-- Drivers -->
+      <div>
+        <div class="label" style="margin-bottom: 32px; font-size: 24px;">Drivers de crescimento</div>
+        <div style="display: flex; flex-direction: column; gap: 28px;">
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <div style="width: 6px; height: 60px; background: var(--acc); border-radius: 3px; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 30px; font-weight: 600;">+33% a.a.</div>
+              <div class="dim" style="font-size: 24px; margin-top: 6px;">crescimento do SaaS no Brasil — maior LATAM</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <div style="width: 6px; height: 60px; background: var(--ai); border-radius: 3px; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 30px; font-weight: 600;">21 milhões</div>
+              <div class="dim" style="font-size: 24px; margin-top: 6px;">de PMEs no Brasil — &lt;10% têm stack digitalizada</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <div style="width: 6px; height: 60px; background: var(--acc); border-radius: 3px; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 30px; font-weight: 600;">+450%</div>
+              <div class="dim" style="font-size: 24px; margin-top: 6px;">buscas por "ferramenta IA para [nicho]" desde 2024</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <div style="width: 6px; height: 60px; background: var(--ai); border-radius: 3px; flex-shrink: 0;"></div>
+            <div>
+              <div style="font-size: 30px; font-weight: 600;">Vácuo regional</div>
+              <div class="dim" style="font-size: 24px; margin-top: 6px;">G2/Capterra/Product Hunt são EN-first, sem nuance LATAM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     04 · SOLUTION
+     ============================================================ -->
+<section data-screen-label="04 Solution">
+  <div class="glow-acc" style="top: -200px; right: -100px;"></div>
+
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">03 · Solução</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="eyebrow">A solução Stackly</div>
+    <h1 class="display" style="max-width: 1600px; line-height: 1.3; font-size: 96px;">
+      Uma IA consultora <span class="ital accent">empresarial</span><br>
+      + um marketplace que <span class="ital accent">vende sozinho</span>.
+    </h1>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 60px;">
+      <div class="card" style="padding: 32px; border-color: var(--acc); background: linear-gradient(180deg, var(--acc-soft), transparent 60%), var(--surface);">
+        <div class="label accent">Para o usuário</div>
+        <div style="font-size: 30px; font-weight: 500; line-height: 1.2; margin-top: 18px; letter-spacing: -0.015em;">
+          Conta o que precisa.<br>Recebe a stack inteira.
+        </div>
+        <div class="dim" style="font-size: 24px; line-height: 1.5; margin-top: 18px;">
+          Consultor IA, gerador de stack, comparador, migrador. Em segundos, não semanas.
+        </div>
+      </div>
+      <div class="card" style="padding: 32px; border-color: var(--border-strong);">
+        <div class="label" style="color: var(--ai);">Para o anunciante</div>
+        <div style="font-size: 30px; font-weight: 500; line-height: 1.2; margin-top: 18px; letter-spacing: -0.015em;">
+          Aquisição que se<br>retroalimenta.
+        </div>
+        <div class="dim" style="font-size: 24px; line-height: 1.5; margin-top: 18px;">
+          Perfil rico, ranqueamento, leads qualificados pela IA, dashboard com ROI.
+        </div>
+      </div>
+      <div class="card" style="padding: 32px; border-color: var(--border-strong);">
+        <div class="label">Para o ecossistema</div>
+        <div style="font-size: 30px; font-weight: 500; line-height: 1.2; margin-top: 18px; letter-spacing: -0.015em;">
+          A camada que<br>conecta tudo.
+        </div>
+        <div class="dim" style="font-size: 24px; line-height: 1.5; margin-top: 18px;">
+          Mapa de integrações, marketplace de agentes IA, automações prontas. O cimento entre softwares.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 40px;">
+      <div style="font-size: 32px; font-style: italic; font-family: 'Instrument Serif', Georgia, serif; color: var(--text-dim); max-width: 1200px; line-height: 1.3;">
+        “O ChatGPT dos softwares — e a App Store dos negócios.”
+      </div>
+      <div class="mono muted" style="font-size: 24px; letter-spacing: 0.08em; flex-shrink: 0;">— como nos posicionamos</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     05 · PRODUCT: AI CONSULTOR
+     ============================================================ -->
+<section data-screen-label="05 Product · AI Consultor">
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">04 · Produto · Consultor IA</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center;">
+    <div>
+      <div class="eyebrow violet" style="color: var(--ai);">Núcleo do produto</div>
+      <h1 class="large">
+        Conversa. Entende.<br>
+        <span class="ital accent">Recomenda</span> a stack.
+      </h1>
+      <p class="lede" style="margin-top: 36px;">
+        Não é busca. Não é chatbot. É um <strong style="color: var(--text);">consultor</strong> que conhece 2.847 ferramentas, custos reais, integrações e o seu contexto.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 18px; margin-top: 44px;">
+        <div style="display: flex; gap: 16px; align-items: center; font-size: 24px;">
+          <span style="width: 28px; height: 28px; border-radius: 8px; background: var(--ai-soft); color: var(--ai); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600;">→</span>
+          Entende nicho, faturamento, time e operação
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; font-size: 24px;">
+          <span style="width: 28px; height: 28px; border-radius: 8px; background: var(--ai-soft); color: var(--ai); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600;">→</span>
+          Monta stacks completas em 1 minuto
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; font-size: 24px;">
+          <span style="width: 28px; height: 28px; border-radius: 8px; background: var(--ai-soft); color: var(--ai); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600;">→</span>
+          Compara, calcula ROI, mostra integrações
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center; font-size: 24px;">
+          <span style="width: 28px; height: 28px; border-radius: 8px; background: var(--ai-soft); color: var(--ai); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600;">→</span>
+          Fecha a compra dentro da plataforma
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual: stylized chat -->
+    <div style="position: relative;">
+      <div style="position: absolute; inset: -40px; background: radial-gradient(circle at 60% 50%, var(--ai-soft), transparent 60%); filter: blur(20px);"></div>
+      <div style="position: relative; display: flex; flex-direction: column; gap: 16px;">
+        <!-- user -->
+        <div style="align-self: flex-end; max-width: 78%; background: var(--surface-2); padding: 24px 28px; border-radius: 24px 24px 6px 24px; border: 1px solid var(--border); font-size: 24px; line-height: 1.45;">
+          Preciso de uma stack pra abrir uma clínica de estética em SP. 4 funcionárias, R$ 80k/mês, orçamento R$ 500/mês.
+        </div>
+        <!-- ai header -->
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: var(--ai); display: flex; align-items: center; justify-content: center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+          </div>
+          <div style="font-size: 24px; color: var(--ai); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase;">Consultor Stackly · analisou 47 opções</div>
+        </div>
+        <!-- recommendation rows -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="card" style="padding: 20px 24px; display: grid; grid-template-columns: 56px 1fr auto; gap: 18px; align-items: center;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #5EEAFE; color: #0A0A0B; font-size: 24px;">C</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">ClinicFlow <span class="pill pill--acc" style="font-size: 24px; padding: 4px 10px; margin-left: 8px;">96% match</span></div>
+              <div class="dim" style="font-size: 24px; margin-top: 4px;">Prontuário + agenda + teleconsulta. Único com ANVISA.</div>
+            </div>
+            <div class="mono" style="font-size: 24px; font-weight: 600;">R$ 149</div>
+          </div>
+          <div class="card" style="padding: 20px 24px; display: grid; grid-template-columns: 56px 1fr auto; gap: 18px; align-items: center;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #FFC2E0; color: #3B0A2E; font-size: 24px;">S</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">SalonPro <span class="pill pill--acc" style="font-size: 24px; padding: 4px 10px; margin-left: 8px;">92% match</span></div>
+              <div class="dim" style="font-size: 24px; margin-top: 4px;">Agenda visual + confirmação automática WhatsApp.</div>
+            </div>
+            <div class="mono" style="font-size: 24px; font-weight: 600;">R$ 79</div>
+          </div>
+          <div class="card" style="padding: 20px 24px; display: grid; grid-template-columns: 56px 1fr auto; gap: 18px; align-items: center;">
+            <div class="ltile" style="width: 56px; height: 56px; background: var(--acc); color: var(--acc-ink); font-size: 24px;">V</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Voxa <span class="pill pill--acc" style="font-size: 24px; padding: 4px 10px; margin-left: 8px;">90% match</span></div>
+              <div class="dim" style="font-size: 24px; margin-top: 4px;">Bot WhatsApp treinado para estética + Instagram.</div>
+            </div>
+            <div class="mono" style="font-size: 24px; font-weight: 600;">R$ 69</div>
+          </div>
+        </div>
+        <!-- total -->
+        <div style="padding: 22px 28px; border-radius: 16px; background: var(--acc-soft); border: 1px dashed var(--acc); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div class="label accent" style="margin: 0;">Total estimado · mensal</div>
+            <div class="mono" style="font-size: 40px; font-weight: 600; margin-top: 4px;">R$ 376</div>
+          </div>
+          <div class="pill pill--acc" style="font-size: 24px;">↓ 27% vs. média do nicho</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     06 · PRODUCT: STACK GENERATOR
+     ============================================================ -->
+<section data-screen-label="06 Product · Stack Generator">
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">05 · Produto · Stack Generator</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="eyebrow">Gerador de Stack</div>
+    <h1 class="display" style="max-width: 1600px; margin-bottom: 80px;">
+      Um quiz de 6 perguntas.<br>
+      <span class="ital accent">Toda a infra</span> do seu negócio.
+    </h1>
+
+    <!-- Pipeline visual: input → AI → output -->
+    <div style="display: grid; grid-template-columns: 320px 80px 1fr; gap: 32px; align-items: center;">
+      <!-- input -->
+      <div class="card">
+        <div class="label">Input</div>
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 18px; font-size: 24px;">
+          <div><span class="muted" style="font-size: 24px;">Segmento</span><br>Clínica de estética</div>
+          <div><span class="muted" style="font-size: 24px;">Time</span><br>4 pessoas</div>
+          <div><span class="muted" style="font-size: 24px;">Faturamento</span><br>R$ 80k/mês</div>
+          <div><span class="muted" style="font-size: 24px;">Orçamento</span><br>R$ 500/mês</div>
+          <div><span class="muted" style="font-size: 24px;">Objetivos</span><br>Captar leads, automatizar</div>
+        </div>
+      </div>
+
+      <!-- arrow -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--ai); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 60px var(--ai-soft);">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        </div>
+        <div class="mono violet" style="font-size: 24px; letter-spacing: 0.08em;">IA</div>
+        <svg width="64" height="16" viewBox="0 0 64 16" fill="none">
+          <path d="M2 8h58M52 2l8 6-8 6" stroke="var(--ai)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- output: stack grid -->
+      <div>
+        <div class="label" style="margin-bottom: 18px;">Stack gerada · 6 ferramentas · R$ 564/mês</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+          <!-- 6 product mini-cards -->
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: var(--acc); color: var(--acc-ink); font-size: 24px;">F</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">CRM</div>
+                <div style="font-size: 24px; font-weight: 600;">Fluxia</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: var(--acc); color: var(--acc-ink); font-size: 24px;">V</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">WhatsApp</div>
+                <div style="font-size: 24px; font-weight: 600;">Voxa</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: #FF6A4D; color: #fff; font-size: 24px;">C</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">ERP</div>
+                <div style="font-size: 24px; font-weight: 600;">Caixa.AI</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: #9D7CFE; color: #fff; font-size: 24px;">L</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">Marketing</div>
+                <div style="font-size: 24px; font-weight: 600;">LeadGrid</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: #0A0A0B; color: var(--acc); font-size: 24px;">A</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">Agentes IA</div>
+                <div style="font-size: 24px; font-weight: 600;">Agentik</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="ltile" style="width: 40px; height: 40px; background: #0F8F4E; color: var(--acc); font-size: 24px;">P</div>
+              <div>
+                <div class="muted mono" style="font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase;">Pagamentos</div>
+                <div style="font-size: 24px; font-weight: 600;">PagaNow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+          <span class="pill"><span class="violet" style="font-size: 24px;">◆</span> 14 automações prontas</span>
+          <span class="pill">3 templates n8n</span>
+          <span class="pill">7 fluxos Zapier</span>
+          <span class="pill pill--acc">↓ 27% vs. média</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     07 · PRODUCT: COMPARE + SCORE
+     ============================================================ -->
+<section data-screen-label="07 Product · Compare + Score">
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">06 · Produto · SaaS Score™ + Comparador</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center;">
+    <div>
+      <div class="eyebrow">Confiança proprietária</div>
+      <h1 class="large">
+        SaaS Score™<br>
+        <span class="ital accent">o algoritmo</span> que ranqueia.
+      </h1>
+      <p class="lede" style="margin-top: 32px;">
+        Não é mais "estrelas que o dono comprou". É um score proprietário com 11 dimensões — estabilidade, IA, suporte, integrações, segurança, custo-benefício, velocidade.
+      </p>
+      <div style="margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; gap: 60px;">
+        <div>
+          <div class="stat-num" style="font-size: 64px;">156k</div>
+          <div class="stat-label">reviews verificadas</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-size: 64px;">11</div>
+          <div class="stat-label">dimensões avaliadas</div>
+        </div>
+        <div>
+          <div class="stat-num" style="font-size: 64px;">∞</div>
+          <div class="stat-label">não-comprável</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison visual -->
+    <div class="card" style="padding: 32px;">
+      <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 0; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+        <div></div>
+        <div style="text-align: center;">
+          <div class="ltile" style="width: 56px; height: 56px; background: var(--acc); color: var(--acc-ink); font-size: 24px; margin: 0 auto;">F</div>
+          <div style="font-size: 24px; font-weight: 600; margin-top: 10px;">Fluxia</div>
+        </div>
+        <div style="text-align: center;">
+          <div class="ltile" style="width: 56px; height: 56px; background: #25D366; color: #fff; font-size: 24px; margin: 0 auto;">Z</div>
+          <div style="font-size: 24px; font-weight: 600; margin-top: 10px;">ZapCRM</div>
+        </div>
+        <div style="text-align: center;">
+          <div class="ltile" style="width: 56px; height: 56px; background: #0A0A0B; color: var(--acc); font-size: 24px; margin: 0 auto; border-color: var(--border-strong);">A</div>
+          <div style="font-size: 24px; font-weight: 600; margin-top: 10px;">Agentik</div>
+        </div>
+      </div>
+
+      <!-- rows -->
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center;">
+          <div style="font-size: 24px; color: var(--text-dim);">SaaS Score™</div>
+          <div style="text-align: center;"><span class="mono accent" style="font-size: 28px; font-weight: 600;">94</span></div>
+          <div style="text-align: center;"><span class="mono" style="font-size: 24px;">89</span></div>
+          <div style="text-align: center;"><span class="mono" style="font-size: 24px;">95</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center;">
+          <div style="font-size: 24px; color: var(--text-dim);">Preço inicial</div>
+          <div style="text-align: center;"><span class="mono accent" style="font-size: 24px;">R$ 49</span></div>
+          <div style="text-align: center;"><span class="mono dim" style="font-size: 24px;">R$ 89</span></div>
+          <div style="text-align: center;"><span class="mono dim" style="font-size: 24px;">R$ 199</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center;">
+          <div style="font-size: 24px; color: var(--text-dim);">WhatsApp nativo</div>
+          <div style="text-align: center;"><span style="color: var(--acc); font-size: 24px;">✓</span></div>
+          <div style="text-align: center;"><span style="color: var(--text-dim); font-size: 24px;">✓</span></div>
+          <div style="text-align: center;"><span class="muted" style="font-size: 24px;">×</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: center;">
+          <div style="font-size: 24px; color: var(--text-dim);">IA de qualificação</div>
+          <div style="text-align: center;"><span style="color: var(--acc); font-size: 24px;">✓</span></div>
+          <div style="text-align: center;"><span class="muted" style="font-size: 24px;">×</span></div>
+          <div style="text-align: center;"><span style="color: var(--text-dim); font-size: 24px;">✓</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 16px 0; align-items: center;">
+          <div style="font-size: 24px; color: var(--text-dim);">Tempo de resposta</div>
+          <div style="text-align: center;"><span class="mono accent" style="font-size: 24px;">12 min</span></div>
+          <div style="text-align: center;"><span class="mono dim" style="font-size: 24px;">34 min</span></div>
+          <div style="text-align: center;"><span class="mono dim" style="font-size: 24px;">2h</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; padding: 20px; background: var(--ai-soft); border-radius: 12px; display: flex; gap: 14px;">
+        <div style="width: 32px; height: 32px; border-radius: 8px; background: var(--ai); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        </div>
+        <div style="font-size: 24px; line-height: 1.5;">
+          <strong>Veredito IA:</strong> Fluxia vence em <span class="accent">9 de 14</span> critérios. Para vendas via WhatsApp no Brasil, é a melhor escolha.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     08 · PRODUCT: AGENTS MARKETPLACE
+     ============================================================ -->
+<section data-screen-label="08 Product · Agents">
+  <div class="glow-violet" style="bottom: -300px; right: -200px;"></div>
+
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">07 · Produto · Marketplace de Agentes IA</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+      <div>
+        <div class="eyebrow violet" style="color: var(--ai);">Camada de execução</div>
+        <h1 class="large">
+          Agentes IA <span class="ital accent">prontos</span><br>
+          para trabalhar.
+        </h1>
+        <p class="lede" style="margin-top: 32px;">
+          Closer GPT que vende no WhatsApp. SAC 24h omnichannel. Cobrador educado. Recepcionista por voz. <strong style="color: var(--text);">2.418 agentes</strong> instaláveis em 2 cliques.
+        </p>
+        <div style="margin-top: 36px; display: flex; gap: 40px;">
+          <div>
+            <div class="mono accent" style="font-size: 48px; font-weight: 600;">2.418</div>
+            <div class="muted" style="font-size: 24px; margin-top: 4px;">agentes</div>
+          </div>
+          <div>
+            <div class="mono accent" style="font-size: 48px; font-weight: 600;">+34%</div>
+            <div class="muted" style="font-size: 24px; margin-top: 4px;">conversão média</div>
+          </div>
+          <div>
+            <div class="mono accent" style="font-size: 48px; font-weight: 600;">&lt;1s</div>
+            <div class="muted" style="font-size: 24px; margin-top: 4px;">resposta</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: var(--acc); color: var(--acc-ink); font-size: 28px;">◐</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Closer GPT</div>
+              <div class="muted" style="font-size: 24px;">Vendas WhatsApp</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">12.4k instalações</span><span class="accent mono">R$ 49</span></div>
+        </div>
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: var(--ai); color: #fff; font-size: 28px;">◑</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">SAC 24h</div>
+              <div class="muted" style="font-size: 24px;">Atendimento</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">8.7k instalações</span><span class="accent mono">R$ 89</span></div>
+        </div>
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #0F8F4E; color: #fff; font-size: 28px;">◒</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Cobrador Educado</div>
+              <div class="muted" style="font-size: 24px;">Financeiro · PIX</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">23.1k instalações</span><span class="accent mono">Grátis</span></div>
+        </div>
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #FF6A4D; color: #fff; font-size: 28px;">◓</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Lead Hunter</div>
+              <div class="muted" style="font-size: 24px;">Marketing</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">5.2k instalações</span><span class="accent mono">R$ 29</span></div>
+        </div>
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #5EEAFE; color: #0A0A0B; font-size: 28px;">◐</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Recepcionista</div>
+              <div class="muted" style="font-size: 24px;">Voz · Saúde</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">3.8k instalações</span><span class="accent mono">R$ 119</span></div>
+        </div>
+        <div class="card" style="padding: 22px;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 14px;">
+            <div class="ltile" style="width: 56px; height: 56px; background: #FFD166; color: #0A0A0B; font-size: 28px;">◒</div>
+            <div>
+              <div style="font-size: 24px; font-weight: 600;">Analisador Fiscal</div>
+              <div class="muted" style="font-size: 24px;">Financeiro</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 24px;"><span class="muted">2.4k instalações</span><span class="accent mono">R$ 149</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     09 · MOAT / DEFENSIBILITY
+     ============================================================ -->
+<section data-screen-label="09 Moat">
+  <div class="chrome-top">
+    <span class="chrome-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+        <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+        <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+      </svg> Stackly
+    </span>
+    <span class="chrome-page">08 · Defensibilidade</span>
+  </div>
+
+  <div class="slide-pad" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="eyebrow">Por que ninguém copia depressa</div>
+    <h1 class="display" style="max-width: 1600px; margin-bottom: 80px;">
+      Quatro <span class="ital accent">moats</span> que<br>
+      se reforçam.
+    </h1>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+      <div class="card" style="padding: 36px; border-color: var(--border-strong);">
+        <div style="width: 64px; height: 64px; border-radius: 14px; background: var(--acc-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 28px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><circle cx="9" cy="9" r="3"/><circle cx="15" cy="15" r="3"/><circle cx="15" cy="6" r="2"/><circle cx="6" cy="15" r="2"/><path d="M11 9l4 4"/></svg>
+        </div>
+        <div class="mono accent" style="font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;">01 · Efeito rede</div>
+        <h3 style="font-size: 32px; font-weight: 500; line-height: 1.15; margin: 12px 0 16px; letter-spacing: -0.015em;">
+          Mais usuários → mais reviews → melhor IA.
+        </h3>
+        <p class="dim" style="font-size: 24px; line-height: 1.55;">
+          Cada stack gerada treina o consultor. Cada review afia o SaaS Score™. Cada comparação encontra nichos novos.
+        </p>
+      </div>
+
+      <div class="card" style="padding: 36px; border-color: var(--border-strong);">
+        <div style="width: 64px; height: 64px; border-radius: 14px; background: var(--ai-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 28px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </div>
+        <div class="mono" style="color: var(--ai); font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;">02 · Dados proprietários</div>
+        <h3 style="font-size: 32px; font-weight: 500; line-height: 1.15; margin: 12px 0 16px; letter-spacing: -0.
+015em;">
+          O único dataset que liga softwares a contextos.
+        </h3>
+        <p class="dim" style="font-size: 24px; line-height: 1.55;">
+          Quem usa o quê, em qual nicho, com qual ROI. Ninguém mais tem essa visão — nem G2, nem o próprio Google.
+        </p>
+      </div>
+
+      <div class="card" style="padding: 36px; border-color: var(--border-strong);">
+        <div style="width: 64px; height: 64px; border-radius: 14px; background: var(--acc-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 28px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        </div>
+        <div class="mono accent" style="font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase;">03 · IA verticalizada</div>
+        <h3 style="font-size: 32px; font-weight: 500; line-height: 1.15; margin: 12px 0 16px; letter-spacing: -0.015em;">
+          Consultor que entende negócio brasileiro.
+        </h3>
+        <p class="dim" style="font-size: 24px; line-height: 1.55;">
+          Não é "ChatGPT genérico". Entende ICMS, PIX, eSocial, ANVISA. Sabe que uma clínica de SP é diferente de uma de Salvador.
+        </p>
+      </div>
+
+      <div class="card" style="padding: 36px; border-color: var(--border-strong);">
+        <div style="width: 64px; height: 64px; border-radius: 14px; background: var(--ai-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 28px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" st
