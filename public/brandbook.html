@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Stackly — Brandbook v1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --acc: #C8FF3E;
+    --acc-2: #B8F03A;
+    --acc-soft: rgba(200,255,62,0.16);
+    --acc-glow: rgba(200,255,62,0.45);
+    --acc-ink: #0A0A0B;
+    --ai: #9D7CFE;
+    --ai-2: #8868F0;
+    --ai-soft: rgba(157,124,254,0.16);
+    --pos: #6BE49F;
+    --neg: #FF7A6A;
+    --warn: #FFD166;
+
+    --ink-0: #0A0A0C;
+    --ink-1: #15151A;
+    --ink-2: #1B1B21;
+    --ink-3: #232329;
+    --ink-4: #2D2D34;
+
+    --bg: var(--ink-0);
+    --surface: var(--ink-1);
+    --surface-2: var(--ink-2);
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #F5F5F7;
+    --text-dim: #A6A8AE;
+    --text-muted: #6A6D75;
+
+    --pad-section: 120px 80px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; }
+  .ital { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; }
+
+  /* ──────────────────────────────────────────── */
+  /* SHELL                                         */
+  /* ──────────────────────────────────────────── */
+  .shell {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    max-width: 1640px;
+    margin: 0 auto;
+  }
+  nav.toc {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; padding: 48px 32px;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+    overflow-y: auto;
+  }
+  nav.toc .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 18px; font-weight: 600; letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  nav.toc .version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 44px;
+  }
+  nav.toc .group {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 24px 0 10px;
+  }
+  nav.toc a {
+    display: block; padding: 6px 0;
+    color: var(--text-dim); text-decoration: none;
+    font-size: 14px;
+    transition: color .15s, padding .15s;
+  }
+  nav.toc a:hover { color: var(--text); padding-left: 6px; }
+  nav.toc a .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted); font-size: 12px;
+    margin-right: 14px;
+  }
+
+  main { min-width: 0; }
+  section { padding: var(--pad-section); border-bottom: 1px solid var(--border); position: relative; }
+  section:first-child { padding-top: 80px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--acc);
+    margin-bottom: 24px;
+  }
+  h1 { font-size: 72px; line-height: 1; letter-spacing: -0.035em; font-weight: 500; margin: 0 0 24px; }
+  h2 { font-size: 48px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 500; margin: 0 0 16px; }
+  h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 10px; }
+  .lede { font-size: 22px; line-height: 1.45; color: var(--text-dim); max-width: 740px; }
+  .small { font-size: 13px; color: var(--text-dim); }
+  .micro { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* Cards & surfaces */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .row { display: flex; gap: 32px; align-items: stretch; flex-wrap: wrap; }
+
+  /* ──────────────────────────────────────────── */
+  /* COVER                                         */
+  /* ──────────────────────────────────────────── */
+  .cover {
+    padding: 100px 80px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .glow {
+    position: absolute; inset: -120px;
+    background:
+      radial-gradient(circle at 20% 30%, var(--ai-soft) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, var(--acc-soft) 0%, transparent 50%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .cover .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+    pointer-events: none;
+  }
+  .cover .content {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr auto; gap: 80px;
+    align-items: end;
+  }
+  .cover h1 {
+    font-size: 108px; line-height: 0.94; letter-spacing: -0.04em; font-weight: 500;
+    margin: 0;
+  }
+  .cover .meta-block {
+    text-align: right; max-width: 320px;
+  }
+  .cover .meta-block .pill {
+    margin-bottom: 28px; justify-self: end;
+  }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--text-dim); letter-spacing: 0.04em;
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill.ai { color: var(--ai); background: var(--ai-soft); border-color: transparent; }
+  .pill.acc { color: var(--acc); background: var(--acc-soft); border-color: transparent; }
+
+  /* ──────────────────────────────────────────── */
+  /* LOGO SECTION                                  */
+  /* ──────────────────────────────────────────── */
+  .logo-display {
+    aspect-ratio: 16 / 9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo-display.light { background: #F5F4EE; color: #0A0A0B; }
+  .logo-display.dark { background: var(--ink-0); color: var(--text); }
+  .logo-display.acc { background: var(--acc); color: var(--acc-ink); }
+  .logo-display.violet { background: var(--ai); color: #fff; }
+  .logo-display .caption {
+    position: absolute; bottom: 14px; left: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  /* The Stackly logo: 3 horizontal bars stacked with slight offsets */
+  .logomark {
+    display: inline-block;
+    width: var(--lw, 80px);
+    aspect-ratio: 1 / 1;
+  }
+  .lockup {
+    display: inline-flex; align-items: center; gap: var(--gap, 16px);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: var(--ts, 56px);
+    letter-spacing: -0.025em;
+  }
+  .lockup .logomark { width: calc(var(--ts) * 1.0); }
+
+  /* Don'ts: stylized broken/forbidden examples */
+  .dont {
+    position: relative;
+  }
+  .dont::after {
+    content: '✕';
+    position: absolute; top: 12px; right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; color: var(--neg);
+  }
+  .do::after {
+    content: '✓';
+    position: absolute; top: 12px; right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; color: var(--pos);
+  }
+
+  /* ──────────────────────────────────────────── */
+  /* COLOR SWATCHES                                */
+  /* ──────────────────────────────────────────── */
+  .swatch {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .swatch .chip {
+    aspect-ratio: 4 / 3;
+    position: relative;
+    display: flex; align-items: flex-end; padding: 18px;
+  }
+  .swatch .chip .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .swatch .meta {
+    padding: 14px 16px; background: var(--surface);
+  }
+  .swatch .meta .name { font-size: 14px; font-weight: 600; }
+  .swatch .meta .vals { display: flex; gap: 12px; margin-top: 6px; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+  /* ──────────────────────────────────────────── */
+  /* TYPE SCALE                                    */
+  /* ──────────────────────────────────────────── */
+  .type-row {
+    display: grid; grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .type-row:last-child { border: 0; }
+  .type-row .meta { display: flex; flex-direction: column; gap: 4px; }
+
+  /* ──────────────────────────────────────────── */
+  /* TWO-COL                                       */
+  /* ──────────────────────────────────────────── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .six-col { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+
+  /* Voice cards */
+  .voice-card { padding: 28px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .voice-card.do { border-color: rgba(107,228,159,0.4); }
+  .voice-card.dont { border-color: rgba(255,122,106,0.4); }
+  .voice-card .head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .voice-card.do .head { color: var(--pos); }
+  .voice-card.dont .head { color: var(--neg); }
+  .voice-card .quote {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 28px; line-height: 1.25;
+    margin: 0;
+  }
+  .voice-card.dont .quote { color: var(--text-muted); text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.4); text-decoration-thickness: 1px; }
+  .voice-card .why { font-size: 13px; color: var(--text-dim); margin-top: 18px; line-height: 1.5; }
+
+  /* OG image preview */
+  .og-frame {
+    aspect-ratio: 1200 / 630;
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+    background: var(--bg);
+  }
+
+  /* Favicon strip */
+  .favicon-bench {
+    display: flex; gap: 22px; align-items: flex-end;
+  }
+  .favicon-tile {
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ink-0);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .favicon-tile.acc { background: var(--acc); border-color: transparent; }
+  .favicon-tile.browser {
+    background: #1F1F23;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 0;
+    width: 240px; height: 36px;
+    padding: 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .browser-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+  }
+
+  /* Clear-space diagram helpers */
+  .clear-space {
+    position: relative;
+    padding: 60px;
+    background: var(--surface);
+    border-radius: 16px;
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden;
+  }
+  .clear-space::before {
+    content: '';
+    position: absolute; inset: 36px;
+    border: 1.5px dashed var(--text-muted);
+    border-radius: 8px;
+    opacity: 0.4;
+  }
+  .clear-space .clearspace-label {
+    position: absolute; top: 14px; left: 18px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+  }
+
+  /* Sound bites */
+  .quotebox {
+    padding: 56px 64px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--ai-soft), transparent 60%), var(--surface);
+    border: 1px solid var(--border);
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 44px; line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 1100px;
+  }
+
+  /* Patterns showcase */
+  .pattern {
+    aspect-ratio: 5 / 4;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .pattern-1 {
+    background:
+      repeating-linear-gradient(45deg, var(--acc-soft) 0 2px, transparent 2px 14px),
+      var(--ink-1);
+  }
+  .pattern-2 {
+    background:
+      radial-gradient(circle at 30% 20%, var(--ai-soft) 0%, transparent 40%),
+      radial-gradient(circle at 70% 80%, var(--acc-soft) 0%, transparent 40%),
+      var(--ink-1);
+  }
+  .pattern-3 {
+    background:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px),
+      var(--ink-1);
+    background-size: 24px 24px;
+  }
+  .pattern-4 {
+    background: var(--ink-1);
+    position: relative;
+  }
+  .pattern-4::before {
+    content: 'stack(\\Aly)';
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 120px;
+    color: rgba(200,255,62,0.06);
+    white-space: pre;
+  }
+  .pattern .caption {
+    position: absolute; bottom: 14px; left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="shell">
+<!-- =========================================================== -->
+<!-- TOC                                                          -->
+<!-- =========================================================== -->
+<nav class="toc">
+  <div class="brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+      <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+      <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+    </svg>
+    Stackly
+  </div>
+  <div class="version">Brandbook v1.0 · Nov 2026</div>
+
+  <div class="group">Fundamentos</div>
+  <a href="#essence"><span class="num">01</span>Essência</a>
+  <a href="#story"><span class="num">02</span>História da marca</a>
+
+  <div class="group">Identidade visual</div>
+  <a href="#logo"><span class="num">03</span>Logo &amp; lockups</a>
+  <a href="#favicon"><span class="num">04</span>Favicon &amp; app icon</a>
+  <a href="#clear-space"><span class="num">05</span>Clear space &amp; sizing</a>
+  <a href="#donts"><span class="num">06</span>Não faça isto</a>
+
+  <div class="group">Sistema</div>
+  <a href="#color"><span class="num">07</span>Paleta de cores</a>
+  <a href="#type"><span class="num">08</span>Tipografia</a>
+  <a href="#patterns"><span class="num">09</span>Padrões &amp; texturas</a>
+
+  <div class="group">Aplicação</div>
+  <a href="#og"><span class="num">10</span>OG image &amp; redes</a>
+  <a href="#voice"><span class="num">11</span>Voz da marca</a>
+  <a href="#examples"><span class="num">12</span>Exemplos de uso</a>
+</nav>
+
+
+<!-- =========================================================== -->
+<!-- MAIN                                                         -->
+<!-- =========================================================== -->
+<main>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="content">
+    <div>
+      <div class="pill ai" style="margin-bottom: 28px;"><span class="dot"></span> Brandbook · uso interno e parceiros</div>
+      <h1>O sistema<br>que <span class="ital" style="color: var(--acc);">faz a marca</span><br>existir.</h1>
+    </div>
+    <div class="meta-block">
+      <div class="micro">Versão</div>
+      <div style="font-size: 56px; font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: -0.02em; line-height: 1;">1.0</div>
+      <div class="micro" style="margin-top: 24px;">Última atualização</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 16px;">22 nov 2026</div>
+      <div class="micro" style="margin-top: 24px;">Custódia</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="791b0b18171d390a0d181a121500571a1614">[email&#160;protected]</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 01 ESSENCE                                                   -->
+<!-- =========================================================== -->
+<section id="essence">
+  <div class="eyebrow">01 · Essência</div>
+  <h2>O que estamos construindo,<br>em uma frase.</h2>
+
+  <div class="quotebox" style="margin-top: 56px;">
+    A infraestrutura inteligente<br>do mercado SaaS.
+  </div>
+
+  <div class="three-col" style="margin-top: 80px;">
+    <div>
+      <div class="label">Propósito</div>
+      <div style="font-size: 20px; line-height: 1.45;">
+        Eliminar o atrito entre <strong>negócios</strong> e o <strong>software certo</strong>. Sem perder uma semana pesquisando, sem stack mal montada, sem dinheiro jogado fora.
+      </div>
+    </div>
+    <div>
+      <div class="label">Promessa</div>
+      <div style="font-size: 20px; line-height: 1.45;">
+        Conte o que você precisa. Receba a stack inteira — comparada, integrada, no orçamento. <span class="ital" style="color: var(--acc);">Em minutos.</span>
+      </div>
+    </div>
+    <div>
+      <div class="label">Personalidade</div>
+      <div style="font-size: 20px; line-height: 1.45;">
+        Consultora sênior, não vendedora. <strong>Inteligente</strong>, direta, sem floreios. Confiança vem da clareza, não da quantidade.
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+    <div class="card" style="padding: 24px;">
+      <div class="label" style="color: var(--acc);">Somos</div>
+      <ul style="margin: 14px 0 0; padding-left: 18px; font-size: 16px; line-height: 1.7;">
+        <li>Consultora</li>
+        <li>Curadora</li>
+        <li>Infraestrutura</li>
+        <li>Brasileira, global</li>
+      </ul>
+    </div>
+    <div class="card" style="padding: 24px;">
+      <div class="label" style="color: var(--ai);">Aspiramos</div>
+      <ul style="margin: 14px 0 0; padding-left: 18px; font-size: 16px; line-height: 1.7;">
+        <li>Stripe (rigor)</li>
+        <li>Linear (clareza)</li>
+        <li>Apple (cuidado)</li>
+        <li>OpenAI (visão)</li>
+      </ul>
+    </div>
+    <div class="card" style="padding: 24px;">
+      <div class="label" style="color: var(--text-muted);">Não somos</div>
+      <ul style="margin: 14px 0 0; padding-left: 18px; font-size: 16px; line-height: 1.7;">
+        <li>Diretório</li>
+        <li>Comparativo barato</li>
+        <li>Genérico</li>
+        <li>Mais um Product Hunt</li>
+      </ul>
+    </div>
+    <div class="card" style="padding: 24px;">
+      <div class="label" style="color: var(--neg);">Evitamos</div>
+      <ul style="margin: 14px 0 0; padding-left: 18px; font-size: 16px; line-height: 1.7;">
+        <li>Emojis em UI</li>
+        <li>Jargão de marketing</li>
+        <li>Hype vazio de IA</li>
+        <li>Promessas mágicas</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 02 STORY                                                     -->
+<!-- =========================================================== -->
+<section id="story">
+  <div class="eyebrow">02 · História da marca</div>
+  <h2>De onde vem o nome,<br>o tom, a forma.</h2>
+
+  <div class="two-col" style="margin-top: 56px;">
+    <div>
+      <h3>O nome <span class="ital" style="color: var(--acc);">Stackly</span></h3>
+      <p style="font-size: 17px; color: var(--text-dim); line-height: 1.6;">
+        <strong style="color: var(--text);">Stack</strong> é como o mercado SaaS chama o conjunto de ferramentas que faz um negócio rodar. <strong style="color: var(--text);">-ly</strong> sufixa adverbialmente em inglês — "de modo X". Stackly = <em>"de modo stack"</em>. Curto, lúdico, internacionalizável. Cinco letras, três sílabas, soa moderno em qualquer idioma.
+      </p>
+      <div class="card" style="padding: 20px; margin-top: 24px; background: var(--surface-2);">
+        <div class="micro" style="margin-bottom: 6px;">Pronúncia</div>
+        <div style="font-size: 24px;">/'stæk.li/ <span class="micro" style="margin-left: 12px;">"stéc-li"</span></div>
+      </div>
+    </div>
+    <div>
+      <h3>O símbolo</h3>
+      <p style="font-size: 17px; color: var(--text-dim); line-height: 1.6;">
+        Três barras horizontais empilhadas, ligeiramente deslocadas — representam camadas de uma stack que <strong style="color: var(--text);">não estão exatamente alinhadas</strong>. É a tensão produtiva da nossa proposta: nós alinhamos o que estava torto. A barra superior em <span style="color: var(--acc);">lime elétrico</span> sinaliza a camada que importa hoje — o consultor de IA.
+      </p>
+      <div style="margin-top: 28px; display: flex; align-items: center; gap: 28px; padding: 20px; background: var(--surface-2); border-radius: 12px;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="white" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="white" opacity="0.4"/>
+        </svg>
+        <div>
+          <div class="label" style="margin-bottom: 6px;">3 barras · 3 leituras</div>
+          <div style="font-size: 14px; color: var(--text-dim); line-height: 1.5;">
+            Topo: <span style="color: var(--acc);">IA / agora</span><br>
+            Meio: SaaS / hoje<br>
+            Base: dados / fundação
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 03 LOGO                                                      -->
+<!-- =========================================================== -->
+<section id="logo">
+  <div class="eyebrow">03 · Logo &amp; lockups</div>
+  <h2>Quatro variações.<br>Uma identidade.</h2>
+  <p class="lede" style="margin-bottom: 56px;">A marca vive em dois lockups (horizontal e empilhado) e duas formas isoladas (símbolo e wordmark).</p>
+
+  <!-- Primary lockup -->
+  <div style="margin-bottom: 64px;">
+    <div class="label">Primary · Lockup horizontal · uso padrão</div>
+    <div class="card" style="margin-top: 14px; padding: 0;">
+      <div class="logo-display dark">
+        <div class="lockup" style="--ts: 64px; --gap: 22px;">
+          <svg class="logomark" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+            <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+            <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+          </svg>
+          <span>Stackly</span>
+        </div>
+        <div class="caption">stackly_logo_primary_dark.svg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Variants grid -->
+  <div class="two-col" style="margin-bottom: 56px;">
+    <div>
+      <div class="label">Light · uso em superfícies claras</div>
+      <div class="card" style="margin-top: 14px; padding: 0;">
+        <div class="logo-display light">
+          <div class="lockup" style="--ts: 56px; --gap: 18px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.55"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.3"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="caption">stackly_logo_primary_light.svg</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label">Reverso · uso sobre acento</div>
+      <div class="card" style="margin-top: 14px; padding: 0;">
+        <div class="logo-display acc">
+          <div class="lockup" style="--ts: 56px; --gap: 18px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="currentColor"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.55"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.3"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="caption">stackly_logo_reverse_acc.svg</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="label">Símbolo isolado · favicon, app, social</div>
+      <div class="card" style="margin-top: 14px; padding: 0;">
+        <div class="logo-display dark" style="aspect-ratio: 4/3;">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+            <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+            <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+          </svg>
+          <div class="caption">stackly_mark.svg</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label">Wordmark isolado · headers e títulos</div>
+      <div class="card" style="margin-top: 14px; padding: 0;">
+        <div class="logo-display dark" style="aspect-ratio: 4/3;">
+          <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 80px; letter-spacing: -0.03em;">Stackly</span>
+          <div class="caption">stackly_wordmark.svg</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sized scale -->
+  <div style="margin-top: 56px;">
+    <div class="label">Escala mínima recomendada</div>
+    <div class="card" style="margin-top: 14px; padding: 48px; background: var(--surface);">
+      <div style="display: flex; align-items: baseline; gap: 64px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+          <div class="lockup" style="--ts: 14px; --gap: 6px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="micro">14px · web</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+          <div class="lockup" style="--ts: 22px; --gap: 8px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="micro">22px · nav</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+          <div class="lockup" style="--ts: 36px; --gap: 12px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="micro">36px · hero</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+          <div class="lockup" style="--ts: 64px; --gap: 22px;">
+            <svg class="logomark" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+            </svg>
+            <span>Stackly</span>
+          </div>
+          <div class="micro">64px · cover / impressos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 04 FAVICON & APP ICON                                        -->
+<!-- =========================================================== -->
+<section id="favicon">
+  <div class="eyebrow">04 · Favicon &amp; app icon</div>
+  <h2>Reconhecível em 16 pixels.</h2>
+  <p class="lede" style="margin-bottom: 48px;">O ícone do app é o símbolo sobre fundo lime — a marca mais clara em qualquer dock ou aba.</p>
+
+  <!-- Bench: multiple sizes -->
+  <div class="favicon-bench" style="margin-bottom: 48px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div class="favicon-tile acc" style="width: 128px; height: 128px; border-radius: 28px;">
+        <svg width="74" height="74" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.6"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="micro">128px · app store</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div class="favicon-tile acc" style="width: 64px; height: 64px; border-radius: 14px;">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.6"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="micro">64px</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div class="favicon-tile acc" style="width: 32px; height: 32px; border-radius: 7px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.6"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="micro">32px · tab</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div class="favicon-tile acc" style="width: 16px; height: 16px; border-radius: 4px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="2" fill="#0A0A0B"/>
+          <rect x="6" y="10" width="14" height="4" rx="2" fill="#0A0A0B" opacity="0.6"/>
+          <rect x="3" y="16" width="14" height="4" rx="2" fill="#0A0A0B" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="micro">16px · favicon</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <div class="favicon-tile browser">
+          <div class="favicon-tile acc" style="width: 14px; height: 14px; border-radius: 3px;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="2" fill="#0A0A0B"/>
+              <rect x="6" y="10" width="14" height="4" rx="2" fill="#0A0A0B" opacity="0.6"/>
+              <rect x="3" y="16" width="14" height="4" rx="2" fill="#0A0A0B" opacity="0.35"/>
+            </svg>
+          </div>
+          <span class="browser-text">stackly.com</span>
+          <span style="margin-left: auto; color: var(--text-muted); font-size: 11px;">×</span>
+        </div>
+      </div>
+      <div class="micro">tab no browser</div>
+    </div>
+  </div>
+
+  <!-- iOS / macOS context -->
+  <div class="two-col">
+    <div class="card" style="padding: 0; overflow: hidden; background: linear-gradient(135deg, #5D7DC9, #38528A);">
+      <div style="padding: 56px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+        <div class="favicon-tile acc" style="width: 100px; height: 100px; border-radius: 22px; box-shadow: 0 14px 40px rgba(0,0,0,0.3);">
+          <svg width="58" height="58" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+            <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.6"/>
+            <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.35"/>
+          </svg>
+        </div>
+        <div style="color: #fff; font-size: 12px;">Stackly</div>
+      </div>
+      <div style="padding: 14px 18px; background: rgba(0,0,0,0.25); color: rgba(255,255,255,0.8); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">iOS · home screen</div>
+    </div>
+    <div class="card" style="padding: 0; overflow: hidden; background: var(--ink-1);">
+      <div style="padding: 40px 60px;">
+        <div class="micro" style="margin-bottom: 18px;">Dock macOS · 64px</div>
+        <div style="display: flex; align-items: flex-end; justify-content: space-around; padding: 14px 18px; background: rgba(255,255,255,0.06); border-radius: 18px; backdrop-filter: blur(10px);">
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #4A90E2, #2962FF); border-radius: 11px;"></div>
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FF6B6B, #C44569); border-radius: 11px;"></div>
+          <div class="favicon-tile acc" style="width: 56px; height: 56px; border-radius: 13px; margin-bottom: -4px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#0A0A0B"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.6"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#0A0A0B" opacity="0.35"/>
+            </svg>
+          </div>
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #38EF7D, #11998E); border-radius: 11px;"></div>
+          <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FFD93D, #FF6B35); border-radius: 11px;"></div>
+        </div>
+      </div>
+      <div style="padding: 14px 18px; background: rgba(255,255,255,0.04); color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">macOS · dock</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 05 CLEAR SPACE                                               -->
+<!-- =========================================================== -->
+<section id="clear-space">
+  <div class="eyebrow">05 · Clear space</div>
+  <h2>Respire em volta da marca.</h2>
+  <p class="lede" style="margin-bottom: 48px;">A área protegida mínima ao redor da marca equivale à altura da barra superior do símbolo (1 unidade <span class="mono">U</span>).</p>
+
+  <div class="two-col">
+    <div class="clear-space">
+      <div class="clearspace-label">U = 1 unidade</div>
+      <div class="lockup" style="--ts: 48px; --gap: 16px;">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span>Stackly</span>
+      </div>
+    </div>
+    <div class="card" style="padding: 40px;">
+      <h3>Regras</h3>
+      <ul style="font-size: 15px; line-height: 1.75; color: var(--text-dim); padding-left: 18px; margin: 8px 0 0;">
+        <li>Margem mínima: <span class="mono" style="color: var(--text);">1U</span> em todos os lados</li>
+        <li>Nunca corte ou recorte o símbolo</li>
+        <li>Não combine com outros logos sem espaço</li>
+        <li>Em rodapés densos, aumente para <span class="mono" style="color: var(--text);">2U</span></li>
+        <li>Backgrounds com pattern: usar fundo sólido</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 06 DON'TS                                                    -->
+<!-- =========================================================== -->
+<section id="donts">
+  <div class="eyebrow">06 · Não faça isto</div>
+  <h2>Seis erros comuns.<br>Nenhum aceitável.</h2>
+
+  <div class="three-col" style="margin-top: 48px;">
+    <!-- 1 stretch -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px; transform: scaleX(1.6);">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span>Stackly</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não distorça</div>
+    </div>
+    <!-- 2 rotate -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px; transform: rotate(-18deg);">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span>Stackly</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não rotacione</div>
+    </div>
+    <!-- 3 recolor -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px;">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="#FF6A6A"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="#FFD166"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="#5EEAFE"/>
+        </svg>
+        <span style="background: linear-gradient(90deg, #FF6A6A, #5EEAFE); -webkit-background-clip: text; background-clip: text; color: transparent;">Stackly</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não recolora</div>
+    </div>
+    <!-- 4 shadow -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px; text-shadow: 4px 4px 0 var(--ai), 8px 8px 8px rgba(0,0,0,0.5);">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none" style="filter: drop-shadow(4px 4px 0 var(--ai)) drop-shadow(8px 8px 8px rgba(0,0,0,0.5));">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span>Stackly</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não adicione sombras / efeitos</div>
+    </div>
+    <!-- 5 outline -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px;">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5">
+          <rect x="3" y="4" width="14" height="4" rx="1.5"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5"/>
+        </svg>
+        <span style="-webkit-text-stroke: 1px var(--text); color: transparent;">Stackly</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não use outline</div>
+    </div>
+    <!-- 6 emoji -->
+    <div class="card dont" style="padding: 36px; aspect-ratio: 5/4; display: flex; align-items: center; justify-content: center; position: relative;">
+      <div class="lockup" style="--ts: 36px; --gap: 12px;">
+        <svg class="logomark" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span>Stackly 🚀✨</span>
+      </div>
+      <div style="position: absolute; bottom: 14px; left: 16px;" class="micro">não combine com emoji / mascotes</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 07 COLOR PALETTE                                             -->
+<!-- =========================================================== -->
+<section id="color">
+  <div class="eyebrow">07 · Paleta de cores</div>
+  <h2>Lime elétrico.<br>Violeta de IA. Pretos quentes.</h2>
+  <p class="lede" style="margin-bottom: 56px;">Duas cores que carregam sentido. Tudo o mais é neutro. <strong style="color: var(--text);">Stackly Lime</strong> é a marca; <strong style="color: var(--text);">Synapse Violet</strong> é a IA. Não invente novas cores.</p>
+
+  <!-- Primary heroes -->
+  <div class="row" style="margin-bottom: 56px;">
+    <div class="card" style="flex: 1; min-width: 320px; padding: 0; overflow: hidden;">
+      <div style="background: var(--acc); height: 280px; position: relative; padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="mono" style="color: var(--acc-ink); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">Primary · brand</div>
+        <div>
+          <div style="font-size: 48px; font-weight: 600; color: var(--acc-ink); letter-spacing: -0.02em; line-height: 1;">Stackly Lime</div>
+          <div class="mono" style="color: var(--acc-ink); opacity: 0.7; margin-top: 6px;">#C8FF3E</div>
+        </div>
+      </div>
+      <div style="padding: 20px 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+        <div><div style="color: var(--text-muted);">HEX</div><div style="color: var(--text);">C8FF3E</div></div>
+        <div><div style="color: var(--text-muted);">RGB</div><div style="color: var(--text);">200, 255, 62</div></div>
+        <div><div style="color: var(--text-muted);">OKLCH</div><div style="color: var(--text);">96% 0.27 124</div></div>
+      </div>
+      <div style="padding: 14px 24px 20px; font-size: 13px; color: var(--text-dim); line-height: 1.5; border-top: 1px solid var(--border);">
+        Acentos primários, CTAs, status positivo, hover de elementos importantes. <strong style="color: var(--text);">Texto sobre lime: sempre #0A0A0B.</strong>
+      </div>
+    </div>
+    <div class="card" style="flex: 1; min-width: 320px; padding: 0; overflow: hidden;">
+      <div style="background: var(--ai); height: 280px; position: relative; padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="mono" style="color: #fff; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85;">Secondary · AI surfaces</div>
+        <div>
+          <div style="font-size: 48px; font-weight: 600; color: #fff; letter-spacing: -0.02em; line-height: 1;">Synapse Violet</div>
+          <div class="mono" style="color: #fff; opacity: 0.7; margin-top: 6px;">#9D7CFE</div>
+        </div>
+      </div>
+      <div style="padding: 20px 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+        <div><div style="color: var(--text-muted);">HEX</div><div style="color: var(--text);">9D7CFE</div></div>
+        <div><div style="color: var(--text-muted);">RGB</div><div style="color: var(--text);">157, 124, 254</div></div>
+        <div><div style="color: var(--text-muted);">OKLCH</div><div style="color: var(--text);">66% 0.21 290</div></div>
+      </div>
+      <div style="padding: 14px 24px 20px; font-size: 13px; color: var(--text-dim); line-height: 1.5; border-top: 1px solid var(--border);">
+        Reserva exclusiva para IA — consultor, recomendações, badges "IA gerou isso". <strong style="color: var(--text);">Nunca como cor primária de produto.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neutrals -->
+  <div style="margin-bottom: 56px;">
+    <div class="label" style="margin-bottom: 18px;">Tons quentes (pretos &amp; brancos) · <span style="color: var(--text);">a base de tudo</span></div>
+    <div class="six-col">
+      <div class="swatch">
+        <div class="chip" style="background: #0A0A0C; color: rgba(255,255,255,0.7);"><span class="role">Ink 0</span></div>
+        <div class="meta">
+          <div class="name">Pure ink</div>
+          <div class="vals"><span>#0A0A0C</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #15151A; color: rgba(255,255,255,0.7);"><span class="role">Ink 1</span></div>
+        <div class="meta">
+          <div class="name
+">Pure ink</div>
+          <div class="vals"><span>#0A0A0C</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #15151A; color: rgba(255,255,255,0.7);"><span class="role">Ink 1</span></div>
+        <div class="meta">
+          <div class="name">Surface</div>
+          <div class="vals"><span>#15151A</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #1B1B21; color: rgba(255,255,255,0.7);"><span class="role">Ink 2</span></div>
+        <div class="meta">
+          <div class="name">Surface 2</div>
+          <div class="vals"><span>#1B1B21</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #232329; color: rgba(255,255,255,0.7);"><span class="role">Ink 3</span></div>
+        <div class="meta">
+          <div class="name">Border</div>
+          <div class="vals"><span>#232329</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #ECEAE2; color: rgba(0,0,0,0.5);"><span class="role">Bone</span></div>
+        <div class="meta">
+          <div class="name">Bone</div>
+          <div class="vals"><span>#ECEAE2</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #F5F4EE; color: rgba(0,0,0,0.5);"><span class="role">Paper</span></div>
+        <div class="meta">
+          <div class="name">Paper</div>
+          <div class="vals"><span>#F5F4EE</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div>
+    <div class="label" style="margin-bottom: 18px;">Status · <span style="color: var(--text);">use com cuidado</span></div>
+    <div class="four-col">
+      <div class="swatch">
+        <div class="chip" style="background: #6BE49F; color: rgba(10,10,12,0.7);"><span class="role">Pos</span></div>
+        <div class="meta">
+          <div class="name">Verdant</div>
+          <div class="vals"><span>#6BE49F</span><span>success</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #FFD166; color: rgba(10,10,12,0.7);"><span class="role">Warn</span></div>
+        <div class="meta">
+          <div class="name">Sun</div>
+          <div class="vals"><span>#FFD166</span><span>warning</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #FF7A6A; color: rgba(255,255,255,0.85);"><span class="role">Neg</span></div>
+        <div class="meta">
+          <div class="name">Coral</div>
+          <div class="vals"><span>#FF7A6A</span><span>error</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: #5EEAFE; color: rgba(10,10,12,0.7);"><span class="role">Info</span></div>
+        <div class="meta">
+          <div class="name">Cyan</div>
+          <div class="vals"><span>#5EEAFE</span><span>info</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contrast pairs -->
+  <div style="margin-top: 56px;">
+    <div class="label" style="margin-bottom: 18px;">Pares de contraste aprovados</div>
+    <div class="four-col">
+      <div class="card" style="background: var(--ink-0); padding: 28px; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 500; color: var(--acc);">Aa</div>
+        <div class="micro">lime sobre ink · AAA</div>
+      </div>
+      <div class="card" style="background: var(--acc); padding: 28px; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 500; color: var(--acc-ink);">Aa</div>
+        <div class="mono" style="font-size: 10px; color: rgba(10,10,12,0.7); letter-spacing: 0.1em; text-transform: uppercase;">ink sobre lime · AAA</div>
+      </div>
+      <div class="card" style="background: var(--ink-0); padding: 28px; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 500; color: var(--ai);">Aa</div>
+        <div class="micro">violet sobre ink · AA</div>
+      </div>
+      <div class="card" style="background: #F5F4EE; padding: 28px; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 500; color: #0A0A0B;">Aa</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(10,10,12,0.6); letter-spacing: 0.1em; text-transform: uppercase;">ink sobre paper · AAA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 08 TYPOGRAPHY                                                -->
+<!-- =========================================================== -->
+<section id="type">
+  <div class="eyebrow">08 · Tipografia</div>
+  <h2>Três famílias.<br>Cada uma com um trabalho.</h2>
+  <p class="lede" style="margin-bottom: 56px;">Sem inventar. Sem "system-ui". A combinação abaixo é a identidade tipográfica oficial — display geométrico, mono para dados, serif itálico para acentos editoriais.</p>
+
+  <!-- Family overview -->
+  <div class="three-col" style="margin-bottom: 64px;">
+    <div class="card" style="padding: 36px;">
+      <div class="label" style="color: var(--acc);">Display &amp; UI</div>
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 64px; line-height: 1; letter-spacing: -0.02em; font-weight: 500; margin: 20px 0 18px;">Aa Gg</div>
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 6px;">Space Grotesk</div>
+      <div class="mono" style="font-size: 11px; color: var(--text-muted);">400 · 500 · 600 · 700</div>
+      <div style="font-size: 13px; color: var(--text-dim); margin-top: 18px; line-height: 1.6;">
+        Família principal. Headers, UI, copy. Geometria limpa, espaçamento neutro, italic ausente — exatamente o que queremos.
+      </div>
+    </div>
+    <div class="card" style="padding: 36px;">
+      <div class="label" style="color: var(--ai);">Mono / Dados</div>
+      <div class="mono" style="font-size: 64px; line-height: 1; letter-spacing: -0.02em; font-weight: 500; margin: 20px 0 18px;">123 R$</div>
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 6px;">JetBrains Mono</div>
+      <div class="mono" style="font-size: 11px; color: var(--text-muted);">400 · 500 · 600</div>
+      <div style="font-size: 13px; color: var(--text-dim); margin-top: 18px; line-height: 1.6;">
+        Números, métricas, labels, IDs, URLs. Reforça a vibe técnica. <strong style="color: var(--text);">Nunca</strong> para parágrafos longos.
+      </div>
+    </div>
+    <div class="card" style="padding: 36px;">
+      <div class="label">Editorial / Acento</div>
+      <div class="ital" style="font-size: 72px; line-height: 1; letter-spacing: -0.01em; margin: 20px 0 18px;">Aa Gg</div>
+      <div style="font-size: 22px; font-weight: 600; margin-bottom: 6px;">Instrument Serif <span class="ital" style="color: var(--text-dim); font-size: 18px;">italic</span></div>
+      <div class="mono" style="font-size: 11px; color: var(--text-muted);">400 · italic 400</div>
+      <div style="font-size: 13px; color: var(--text-dim); margin-top: 18px; line-height: 1.6;">
+        Apenas para acentos editoriais — uma ou duas palavras em headers grandes, citações. Use com economia.
+      </div>
+    </div>
+  </div>
+
+  <!-- Type scale -->
+  <div class="label" style="margin-bottom: 4px;">Escala tipográfica</div>
+  <div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Display XL</div>
+        <div class="micro">108px · -0.04em · 500</div>
+      </div>
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 108px; line-height: 0.95; letter-spacing: -0.04em; font-weight: 500;">Inteligência.</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Display L</div>
+        <div class="micro">72px · -0.035em · 500</div>
+      </div>
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 72px; line-height: 1; letter-spacing: -0.035em; font-weight: 500;">A stack inteira em 1 minuto.</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Display M</div>
+        <div class="micro">48px · -0.025em · 500</div>
+      </div>
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 48px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 500;">A infraestrutura inteligente do mercado SaaS.</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Heading</div>
+        <div class="micro">22px · -0.015em · 600</div>
+      </div>
+      <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.015em;">Recursos &amp; integrações</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Body L</div>
+        <div class="micro">17px · -0.005em · 400</div>
+      </div>
+      <div style="font-size: 17px; line-height: 1.55; color: var(--text-dim); max-width: 720px;">O Fluxia se destaca como CRM especialmente forte para times pequenos no Brasil que precisam de WhatsApp nativo. Usuários elogiam a IA que prioriza leads (mencionada em 73% das reviews positivas).</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Body</div>
+        <div class="micro">15px · 400</div>
+      </div>
+      <div style="font-size: 15px; line-height: 1.55;">Texto padrão da interface. Reviews, descrições, parágrafos curtos. Cor: <span class="mono">--text-dim</span> em blocos longos.</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Mono Stat</div>
+        <div class="micro">JetBrains Mono · 32px · 600</div>
+      </div>
+      <div class="mono" style="font-size: 32px; font-weight: 600; letter-spacing: -0.015em;">R$ 12.4M · 94 score · 99.98%</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Label</div>
+        <div class="micro">JetBrains Mono · 11px · 0.12em · upper</div>
+      </div>
+      <div class="mono" style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);">Resumo IA · baseado em 1.284 avaliações</div>
+    </div>
+    <div class="type-row">
+      <div class="meta">
+        <div class="mono" style="font-size: 16px; color: var(--text);">Editorial accent</div>
+        <div class="micro">Instrument Serif italic · sparingly</div>
+      </div>
+      <div style="font-size: 64px; line-height: 1; letter-spacing: -0.03em; font-weight: 500;">A infraestrutura <span class="ital" style="color: var(--acc);">inteligente</span>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 09 PATTERNS                                                  -->
+<!-- =========================================================== -->
+<section id="patterns">
+  <div class="eyebrow">09 · Padrões &amp; texturas</div>
+  <h2>Quatro texturas oficiais.<br>Nenhuma é decoração.</h2>
+  <p class="lede" style="margin-bottom: 48px;">Cada padrão tem um lugar. Hatch lime para CTAs e seções de produto; mesh sutil para hero areas; grid técnico para superfícies de dados; tipografia fantasma para títulos de capítulo.</p>
+
+  <div class="four-col">
+    <div class="pattern pattern-1">
+      <div class="caption">hatch · CTA &amp; produto</div>
+    </div>
+    <div class="pattern pattern-2">
+      <div class="caption">mesh · hero areas</div>
+    </div>
+    <div class="pattern pattern-3">
+      <div class="caption">grid técnico · dados</div>
+    </div>
+    <div class="pattern pattern-4">
+      <div class="caption">typo fantasma · capítulos</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 10 OG IMAGE                                                  -->
+<!-- =========================================================== -->
+<section id="og">
+  <div class="eyebrow">10 · OG image &amp; redes</div>
+  <h2>Como aparecemos<br>em links compartilhados.</h2>
+  <p class="lede" style="margin-bottom: 48px;">1200×630px. Hierarquia constante: logomark + título grande + acento serif italic. Sem fotos, sem mockups, sem stock.</p>
+
+  <!-- OG hero -->
+  <div class="og-frame" style="margin-bottom: 32px;">
+    <!-- backdrop -->
+    <div style="position: absolute; inset: 0; background: var(--bg);">
+      <div style="position: absolute; inset: 0;
+        background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);"></div>
+      <div style="position: absolute; top: -200px; right: -200px; width: 700px; height: 700px;
+        background: radial-gradient(circle, var(--ai-soft) 0%, transparent 60%); filter: blur(30px);"></div>
+      <div style="position: absolute; bottom: -200px; left: -200px; width: 600px; height: 600px;
+        background: radial-gradient(circle, var(--acc-soft) 0%, transparent 60%); filter: blur(30px);"></div>
+    </div>
+    <!-- content -->
+    <div style="position: absolute; inset: 0; padding: 64px 80px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+          <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+        </svg>
+        <span style="font-size: 24px; font-weight: 600; letter-spacing: -0.015em;">Stackly</span>
+      </div>
+      <div>
+        <div style="font-size: 64px; line-height: 1; letter-spacing: -0.035em; font-weight: 500; max-width: 880px;">
+          A infraestrutura <span class="ital" style="color: var(--acc);">inteligente</span><br>do mercado SaaS.
+        </div>
+        <div style="margin-top: 24px; display: flex; gap: 12px; align-items: center;">
+          <div class="pill ai" style="font-size: 13px;"><span class="dot"></span> Marketplace + Consultor IA</div>
+          <div class="mono" style="font-size: 13px; color: var(--text-muted); letter-spacing: 0.06em;">stackly.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Variations -->
+  <div class="three-col">
+    <div>
+      <div class="label">OG · feature launch</div>
+      <div class="og-frame" style="margin-top: 14px;">
+        <div style="position: absolute; inset: 0; background: var(--acc); padding: 56px 56px;">
+          <div style="display: flex; align-items: center; gap: 10px; color: var(--acc-ink);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="currentColor"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.6"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.35"/>
+            </svg>
+            <span style="font-size: 16px; font-weight: 600;">Stackly</span>
+          </div>
+          <div style="margin-top: 80px; font-size: 44px; line-height: 1; letter-spacing: -0.035em; font-weight: 500; color: var(--acc-ink);">
+            Agentik chegou.<br>Construa agentes IA<br>em 2 cliques.
+          </div>
+          <div class="mono" style="font-size: 12px; color: rgba(10,10,12,0.7); margin-top: 32px; letter-spacing: 0.08em;">Novo · marketplace</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label">Twitter card · review</div>
+      <div class="og-frame" style="margin-top: 14px;">
+        <div style="position: absolute; inset: 0; background: var(--surface); padding: 44px;">
+          <div class="ital" style="font-size: 32px; line-height: 1.2; color: var(--text);">
+            "Substituí 3 ferramentas por uma só. Economizo R$ 380/mês."
+          </div>
+          <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--ink-3);"></div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500;">Renata C.</div>
+              <div class="mono" style="font-size: 11px; color: var(--text-muted);">5 estrelas · sobre Fluxia</div>
+            </div>
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 6px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+                <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.6"/>
+                <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.35"/>
+              </svg>
+              <span style="font-size: 13px; font-weight: 600;">Stackly</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="label">LinkedIn · ranking</div>
+      <div class="og-frame" style="margin-top: 14px;">
+        <div style="position: absolute; inset: 0; background: var(--surface); padding: 44px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+              <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.6"/>
+              <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.35"/>
+            </svg>
+            <span style="font-size: 16px; font-weight: 600;">Stackly Rankings</span>
+          </div>
+          <div style="margin-top: 32px; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500;">
+            Melhores CRM com<br>WhatsApp para <span class="ital" style="color: var(--acc);">salões</span>
+          </div>
+          <div style="position: absolute; bottom: 44px; right: 44px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;">Nov 2026</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 64px; font-weight: 600; color: var(--acc); line-height: 1; letter-spacing: -0.03em;">10</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); text-align: right;">ferramentas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 11 VOICE                                                     -->
+<!-- =========================================================== -->
+<section id="voice">
+  <div class="eyebrow">11 · Voz da marca</div>
+  <h2>Soa como uma consultora<br><span class="ital" style="color: var(--acc);">sênior</span>. Não uma vendedora.</h2>
+  <p class="lede" style="margin-bottom: 56px;">Direta. Específica. Confiante sem ser arrogante. Brasileira, mas globalizável. Nunca usa exclamação para forçar emoção.</p>
+
+  <!-- Voice attributes -->
+  <div class="four-col" style="margin-bottom: 64px;">
+    <div class="card" style="padding: 28px;">
+      <div class="mono accent" style="font-size: 32px; font-weight: 600; color: var(--acc);">01</div>
+      <div style="font-size: 20px; font-weight: 600; margin: 8px 0;">Específica</div>
+      <div style="font-size: 14px; color: var(--text-dim); line-height: 1.5;">"Reduz custo em 27%" vence "ajuda você a economizar". Números &gt; adjetivos.</div>
+    </div>
+    <div class="card" style="padding: 28px;">
+      <div class="mono" style="font-size: 32px; font-weight: 600; color: var(--ai);">02</div>
+      <div style="font-size: 20px; font-weight: 600; margin: 8px 0;">Direta</div>
+      <div style="font-size: 14px; color: var(--text-dim); line-height: 1.5;">Frases curtas. Pontos finais. Sem rodeio. Sem "ainda mais que".</div>
+    </div>
+    <div class="card" style="padding: 28px;">
+      <div class="mono accent" style="font-size: 32px; font-weight: 600; color: var(--acc);">03</div>
+      <div style="font-size: 20px; font-weight: 600; margin: 8px 0;">Honesta</div>
+      <div style="font-size: 14px; color: var(--text-dim); line-height: 1.5;">"Não é para você se [X]" vale mais que "perfeito para todos!". Diga não.</div>
+    </div>
+    <div class="card" style="padding: 28px;">
+      <div class="mono" style="font-size: 32px; font-weight: 600; color: var(--ai);">04</div>
+      <div style="font-size: 20px; font-weight: 600; margin: 8px 0;">Curiosa</div>
+      <div style="font-size: 14px; color: var(--text-dim); line-height: 1.5;">Pergunta antes de recomendar. Mostra o porquê da escolha.</div>
+    </div>
+  </div>
+
+  <!-- Examples do/don't -->
+  <div class="label" style="margin-bottom: 18px;">Pares · faça / não faça</div>
+  <div class="two-col" style="gap: 24px;">
+    <div class="voice-card do">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Faça</div>
+      <p class="quote">"Conte o que precisa. Eu monto a stack inteira."</p>
+      <div class="why">Verbo no imperativo. Promessa específica. Confiança sem hype.</div>
+    </div>
+    <div class="voice-card dont">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Não faça</div>
+      <p class="quote">"Descubra o poder revolucionário da IA com nossa solução all-in-one!"</p>
+      <div class="why">Adjetivos vazios. Exclamação. Buzzwords. Soa como anúncio.</div>
+    </div>
+
+    <div class="voice-card do">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Faça</div>
+      <p class="quote">"Fluxia vence em 9 de 14 critérios para salões com WhatsApp."</p>
+      <div class="why">Veredito. Específico. Contexto. Mostra o trabalho.</div>
+    </div>
+    <div class="voice-card dont">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Não faça</div>
+      <p class="quote">"Fluxia é uma das melhores opções do mercado! Confira!"</p>
+      <div class="why">Vago. Genérico. Não diferencia. Não ajuda a decidir.</div>
+    </div>
+
+    <div class="voice-card do">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Faça</div>
+      <p class="quote">"Não é para você se sua operação cabe num Google Sheets."</p>
+      <div class="why">Diga não. Salva tempo. Cria confiança. Engraçado sem ser piada.</div>
+    </div>
+    <div class="voice-card dont">
+      <div class="head"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span> Não faça</div>
+      <p class="quote">"Perfeito para empresas de todos os tamanhos e setores 🚀"</p>
+      <div class="why">Se serve para todos, não serve para ninguém. Emoji selando o crime.</div>
+    </div>
+  </div>
+
+  <!-- Vocabulary -->
+  <div style="margin-top: 64px;">
+    <div class="label" style="margin-bottom: 18px;">Vocabulário · use &amp; evite</div>
+    <div class="two-col">
+      <div class="card" style="padding: 28px;">
+        <div style="color: var(--pos); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px;">Use</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span class="pill">stack</span>
+          <span class="pill">consultor</span>
+          <span class="pill">recomendação</span>
+          <span class="pill">veredito</span>
+          <span class="pill">curado</span>
+          <span class="pill">verificado</span>
+          <span class="pill">integração</span>
+          <span class="pill">automação</span>
+          <span class="pill">contexto</span>
+          <span class="pill">stack ideal</span>
+          <span class="pill">no seu nicho</span>
+        </div>
+      </div>
+      <div class="card" style="padding: 28px;">
+        <div style="color: var(--neg); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px;">Evite</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">revolucionário</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">game-changer</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">all-in-one</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">disruptivo</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">solução</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">ecossistema (raso)</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">user-friendly</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">poderoso</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">elevar</span>
+          <span class="pill" style="text-decoration: line-through; text-decoration-color: rgba(255,122,106,0.5);">escolha do consumidor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+<!-- 12 EXAMPLES                                                  -->
+<!-- =========================================================== -->
+<section id="examples">
+  <div class="eyebrow">12 · Exemplos de uso</div>
+  <h2>O sistema vivo.</h2>
+  <p class="lede" style="margin-bottom: 56px;">Como tudo o que está nesse documento se encontra em uma única tela.</p>
+
+  <!-- Real product card mockup -->
+  <div class="card" style="padding: 0; background: linear-gradient(180deg, var(--ai-soft), transparent 30%), var(--surface); overflow: hidden;">
+    <div style="padding: 18px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 28px;">
+        <div class="lockup" style="--ts: 15px; --gap: 8px;">
+          <svg class="logomark" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="14" height="4" rx="1.5" fill="var(--acc)"/>
+            <rect x="6" y="10" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.7"/>
+            <rect x="3" y="16" width="14" height="4" rx="1.5" fill="currentColor" opacity="0.4"/>
+          </svg>
+          <span>Stackly</span>
+        </div>
+        <div style="display: flex; gap: 16px; font-size: 13px; color: var(--text-dim);">
+          <span style="color: var(--text);">Descobrir</span>
+          <span>Consultor IA</span>
+          <span>Stacks</span>
+          <span>Agentes</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div class="pill" style="font-size: 11px;">⌘K Buscar</div>
+        <button class="pill" style="border: 0; cursor: pointer;">Anunciar SaaS</button>
+      </div>
+    </div>
+    <div style="padding: 64px 80px; position: relative;">
+      <div style="position: absolute; top: -100px; right: -100px; width: 500px; height: 500px;
+        background: radial-gradient(circle, var(--ai-soft) 0%, transparent 60%); filter: blur(40px); pointer-events: none;"></div>
+
+      <div class="pill ai" style="margin-bottom: 24px;"><span class="dot"></span> v2 · Consultor IA monta sua stack inteira</div>
+      <div style="font-size: 64px; line-height: 1; letter-spacing: -0.035em; font-weight: 500; max-width: 900px;">
+        A infraestrutura<br><span class="ital" style="color: var(--acc);">inteligente</span> do mercado SaaS.
+      </div>
+      <div style="font-size: 17px; color: var(--text-dim); margin: 24px 0 36px; max-width: 620px; line-height: 1.5;">
+        Descubra, compare e contrate softwares e agentes IA com um consultor que entende seu negócio.
+      </div>
+      <div style="background: var(--surface); border: 1px solid var(--border-strong); border-radius: 14px; padding: 6px 6px 6px 18px; display: flex; align-items: center; gap: 10px; max-width: 760px; box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 0 6px var(--ai-soft);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ai)" stroke-width="2"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>
+        <div style="flex: 1; color: var(--text-muted); font-size: 14px;">Quero um CRM com WhatsApp e IA para minha clínica de estética…</div>
+        <button style="background: var(--text); color: var(--bg); border: 0; padding: 10px 16px; border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">Perguntar →</button>
+      </div>
+      <div style="display: flex; gap: 30px; margin-top: 56px; font-size: 12px; color: var(--text-muted);">
+        <div><strong class="mono" style="color: var(--text); font-size: 22px; font-weight: 600;">2.847</strong><div>softwares</div></div>
+        <div><strong class="mono" style="color: var(--text); font-size: 22px; font-weight: 600;">156k</strong><div>avaliações verificadas</div></div>
+        <div><strong class="mono" style="color: var(--text); font-size: 22px; font-weight: 600;">89k</strong><div>stacks montadas</div></div>
+        <div><strong class="mono" style="color: var(--text); font-size: 22px; font-weight: 600;">R$ 12M</strong><div>economizados/mês</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div style="margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end;">
+    <div>
+      <div class="label" style="margin-bottom: 14px;">Custódia da marca</div>
+      <div style="font-size: 20px; line-height: 1.5;">
+        Antes de usar a marca em qualquer canal externo, valide com a custódia. Esse documento é a fonte da verdade — quando algo diverge dele em algum produto, o documento vence.
+      </div>
+    </div>
+    <div style="text-align: right; min-width: 280px;">
+      <div class="mono" style="font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;">Custódia</div>
+      <div style="font-size: 17px; font-family: 'JetBrains Mono', monospace; margin-top: 6px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff9d8d9e919bbf8c8b9e9c949386d19c9092">[email&#160;protected]</a></div>
+      <div class="mono" style="font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 18px;">Próxima revisão</div>
+      <div style="font-size: 17px; font-family: 'JetBrains Mono', monospace; margin-top: 6px;">Q2 2027</div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
